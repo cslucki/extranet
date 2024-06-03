@@ -70,7 +70,8 @@
                 ?>
                 <h2>Liste des Formations Catalogue</h2>
                 <table id="datatablesSimple">
-                    <tr>
+                    <thead>
+                        <tr>
                         <th>Titre</th>
                         <th>Numéro</th>
                         <th>Durée synchrone</th>
@@ -80,6 +81,7 @@
                         <th>Est catalogue</th>
                         <th>Actions</th>
                     </tr>
+                    </thead>
                     <!-- Afficher les données des formations -->
                     <?php foreach ($formationItems as $item): ?>
                         <tr>

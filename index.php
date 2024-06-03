@@ -86,8 +86,14 @@ switch ($page) {
             $controller = new EntityController();
             $controller->viewPdfContent($filePath);
             break;
+        // FormationQuestionnaire
+        case 'formationQuestionnaire':
+            $controller = new FormationQuestionnaireController();
+            $controller->handleRequest();
+            break;
 
-            /****  Gestion de la page par défaut ou erreur 404  ****/
+
+    /****  Gestion de la page par défaut ou erreur 404  ****/
     default:
     echo "Page non trouvée.";
     break;

@@ -296,6 +296,7 @@ class EntityController extends BaseController {
 
 // generateFormationMenu() pour afficher le menu déroulant des formations
     public function generateFormationMenu($database, $selectedId = null) {
+        $page_title = 'Entretiens préalables';
     try {
         $sql = "SELECT id_formation_catalogue, CONCAT(numero, ' - ', titre) AS formation FROM formation_catalogue";
         $query = $database->query($sql);
@@ -428,10 +429,7 @@ public function viewLocalDrive() {
     }
 }
 
-
-
-/*** CRUD pour la table menustatutformation ***/
-
+/** CRUD pour la table menustatutformation **/
 class MenuStatutFormationController {
     public function handleRequest() {
         $action = isset($_GET['action']) ? $_GET['action'] : 'view';
@@ -556,8 +554,13 @@ class MenuStatutFormationController {
     }
 }
 
-/*** CRUD pour formation_catalogue */
-class FormationCatalogueController {
+/**
+ *  
+ * CRUD pour la table formation_catalogue
+ * 
+ */
+
+ class FormationCatalogueController {
     public function handleRequest() {
         $action = isset($_GET['action']) ? $_GET['action'] : 'view';
         $id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -691,5 +694,155 @@ class FormationCatalogueController {
         render('manageFormationCatalogue', ['action' => $action, 'id' => $id]);
     }
 }
+/**
+ *  
+ * CRUD pour la table formation_questionnaire_avant
+ * 
+ */
+
+ class FormationQuestionnaireController {
+    public function handleRequest() {
+        $action = isset($_GET['action']) ? $_GET['action'] : 'view';
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($action === 'store') {
+                $this->storeFormationQuestionnaire();
+            } elseif ($action === 'update' && $id) {
+                $this->updateFormationQuestionnaire($id);
+            }
+        }
+
+        $this->renderView($action, $id);
+    }
+
+    public function index() {
+        $database = new Database();
+        $sql = "SELECT fqa.*, uc.prenom, uc.nom 
+                FROM formation_questionnaire_avant fqa
+                JOIN formation_dossiers fd ON fqa.id_formation_dossiers = fd.id_formation_dossiers
+                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+                ORDER BY fqa.id_formation_dossiers ASC";
+        $query = $database->query($sql);
+
+        if ($query === false) {
+            echo "Erreur lors de la préparation de la requête : " . $database->errorInfo()[2] . "<br>";
+            return [];
+        }
+
+        $query->execute();
+        if ($query->errorCode() != '00000') {
+            echo "Erreur lors de l'exécution de la requête : " . $query->errorInfo()[2] . "<br>";
+            return [];
+        }
+
+        $questionnaires = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $questionnaires;
+    }
+
+    public function viewFormationQuestionnaire($id) {
+        $page_title = 'Détails du Questionnaire Avant';
+        $database = new Database();
+        $sql = "SELECT fqa.*, uc.prenom, uc.nom 
+                FROM formation_questionnaire_avant fqa
+                JOIN formation_dossiers fd ON fqa.id_formation_dossiers = fd.id_formation_dossiers
+                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+                WHERE fqa.id_formation_dossiers = :id";
+        $query = $database->query($sql);
+        $query->execute(['id' => $id]);
+        $questionnaire = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($questionnaire) {
+            include 'views.php';
+            render('viewFormationQuestionnaire', ['questionnaire' => $questionnaire], $page_title);
+        } else {
+            header('Location: index.php?page=formationQuestionnaire');
+            exit;
+        }
+    }
+
+    public function editFormationQuestionnaire($id) {
+        $page_title = 'Éditer Questionnaire Avant';
+        $database = new Database();
+        $sql = "SELECT * FROM formation_questionnaire_avant WHERE id_formation_dossiers = :id";
+        $query = $database->query($sql);
+        $query->execute(['id' => $id]);
+        $questionnaire = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($questionnaire) {
+            return $questionnaire;
+        } else {
+            header('Location: index.php?page=formationQuestionnaire');
+            exit;
+        }
+    }
+
+    public function updateFormationQuestionnaire($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'id' => $id,
+                'id_formation_dossiers' => $_POST['id_formation_dossiers'],
+                'participation_prealable' => $_POST['participation_prealable'],
+                'date_debut_souhaitee' => $_POST['date_debut_souhaitee'],
+                'attentes_formation' => $_POST['attentes_formation']
+            ];
+
+            $database = new Database();
+            $sql = "UPDATE formation_questionnaire_avant SET
+                    id_formation_dossiers = :id_formation_dossiers,
+                    participation_prealable = :participation_prealable,
+                    date_debut_souhaitee = :date_debut_souhaitee,
+                    attentes_formation = :attentes_formation
+                    WHERE id_formation_dossiers = :id";
+            $query = $database->query($sql);
+            $query->execute($data);
+
+            header('Location: index.php?page=formationQuestionnaire');
+            exit;
+        }
+    }
+
+    public function deleteFormationQuestionnaire($id) {
+        $database = new Database();
+        $sql = "DELETE FROM formation_questionnaire_avant WHERE id_formation_dossiers = :id";
+        $query = $database->query($sql);
+        $query->execute(['id' => $id]);
+
+        header('Location: index.php?page=formationQuestionnaire');
+        exit;
+    }
+
+    public function addFormationQuestionnaire() {
+        $page_title = 'Ajouter Questionnaire Avant';
+        include 'views.php';
+        render('addFormationQuestionnaire', [], $page_title);
+    }
+
+    public function storeFormationQuestionnaire() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'id_formation_dossiers' => $_POST['id_formation_dossiers'],
+                'participation_prealable' => $_POST['participation_prealable'],
+                'date_debut_souhaitee' => $_POST['date_debut_souhaitee'],
+                'attentes_formation' => $_POST['attentes_formation']
+            ];
+
+            $database = new Database();
+            $sql = "INSERT INTO formation_questionnaire_avant (id_formation_dossiers, participation_prealable, date_debut_souhaitee, attentes_formation) 
+                    VALUES (:id_formation_dossiers, :participation_prealable, :date_debut_souhaitee, :attentes_formation)";
+            $query = $database->query($sql);
+            $query->execute($data);
+
+            header('Location: index.php?page=formationQuestionnaire');
+            exit;
+        }
+    }
+
+    private function renderView($action, $id) {
+        include 'views.php';
+        render('formationquestionnaire', ['action' => $action, 'id' => $id]);
+    }
+}
+
 
 ?>

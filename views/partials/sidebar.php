@@ -30,7 +30,7 @@
        
         
         <!-- Menu Catalogue -->
-        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFormation_Catalogue" aria-expanded="false" aria-controls="collapseLayouts">
+        <a class="nav-link collapsed" href="/index.php?page=menuStatutFormation" data-bs-toggle="collapse" data-bs-target="#collapseFormation_Catalogue" aria-expanded="false" aria-controls="collapseLayouts">
             <div class="sb-nav-link-icon"><i class="fas fa-list-alt"></i></div>
             Catalogue
             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -45,34 +45,34 @@
 
         <!-- Candidats -->
         <div class="sb-sidenav-menu-heading">Documents</div>
-        <a class="nav-link" href="charts.html">
-            <div class="sb-nav-link-icon"><i class="fas fa-file-pdf"></i></div>
-            Devis
+        <a class="nav-link" href="/index.php?page=formationQuestionnaire">
+            <div class="sb-nav-link-icon"><i class="fas fa-commenting"></i></div>
+            Entretiens préalables
         </a>
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/under_construction.html">
+            <div class="sb-nav-link-icon"><i class="fas fa-file-pdf"></i></div>
+            Devis et conventions
+        </a>
+        <a class="nav-link" href="/under_construction.html">
             <div class="sb-nav-link-icon"><i class="fas fa-check-square"></i></div>
             Factures
         </a>
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/under_construction.html">
             <div class="sb-nav-link-icon"><i class="fas fa-pencil-square"></i></div>
             Conventions
         </a>
-        <a class="nav-link" href="tables.html">
-            <div class="sb-nav-link-icon"><i class="fas fa-commenting"></i></div>
-            Évaluations sommatives
-        </a>
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/under_construction.html">
             <div class="sb-nav-link-icon"><i class="fas fa-file-text"></i></div>
             Évaluations à froid 
         </a>
 
 <!-- Candidats -->
     <div class="sb-sidenav-menu-heading">Candidats</div>
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="/under_construction.html">
             <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>
             Devis
         </a>
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/under_construction.html">
             <div class="sb-nav-link-icon"><i class="fas fa-link"></i></div>
             Factures
         </a>
