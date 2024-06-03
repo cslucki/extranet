@@ -1,0 +1,10 @@
+*.zip
+@OLD/
+drive/
+files/
+README2.md
+SRC_PHP.md
+custo/
+libs/
+node_modules 
+@INPUT/*
