@@ -427,7 +427,7 @@ class EntityController extends BaseController {
             exit;
         }
     }
-}
+    }
 
 /** CRUD pour la table menustatutformation **/
     class MenuStatutFormationController {
@@ -851,7 +851,7 @@ class EntityController extends BaseController {
 
 
 /** Vue lm_gestion_lm_comments */
-class CommentController extends BaseController {
+    class CommentController extends BaseController {
     
     public function handleRequest() {
         $id_guid = isset($_GET['id_guid']) ? $_GET['id_guid'] : null;
@@ -948,10 +948,7 @@ class CommentController extends BaseController {
         
         return $comment_count;
     }
-
-
-
-}
+    }
 
 
 

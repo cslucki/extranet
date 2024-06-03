@@ -106,6 +106,7 @@
                 <h2>Détail de l'entretien préalable</h2>
                 <div>
                     <strong>ID Formation Dossiers:</strong> <?= $questionnaire['id_formation_dossiers'] ?><br>
+                    <strong>Date :</strong> <?= $questionnaire['date_entretien'] ?><br>
                     <strong>Prénom:</strong> <?= $questionnaire['prenom'] ?><br>
                     <strong>Nom:</strong> <?= $questionnaire['nom'] ?><br>
                     <strong>Numéro de la formation:</strong> <?= $questionnaire['numero'] ?><br>
@@ -133,7 +134,7 @@
                             <th>ID</th>
                             <th>Prénom</th>
                             <th>Nom</th>
-                            <th>Participation</th>
+                            <th>Date entretien</th>
                             <th>Date Début Souhaitée</th>
                             <th>Attentes Formation</th>
                             <th>Actions</th>
@@ -145,7 +146,7 @@
                                 <td><?= $item['id_formation_dossiers'] ?></td>
                                 <td><?= $item['prenom'] ?></td>
                                 <td><?= $item['nom'] ?></td>
-                                <td><?= $item['participation_prealable'] ?></td>
+                                <td><?= $item['date_entretien'] ?></td>
                                 <td><?= $item['date_debut_souhaitee'] ?></td>
                                 <td><?= $item['attentes_formation'] ?></td>
                                 <td>

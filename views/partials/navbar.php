@@ -6,10 +6,11 @@
             <li><a class="dropdown-item" href="/utils/contenu_fichiers.php">Genère SRC_PHP.md</a></li>
             <li><a class="dropdown-item" href="/utils/ImportExcel.php">Import XL</a></li>
             <li><a class="dropdown-item" href="/utils/DossiersUtil.php">Utilitaires Dossiers</a></li> 
-            <li><a class="dropdown-item" href="utils/pdfparser.php">Parser PDF</a></li> 
-            <li><a class="dropdown-item" href="utils/PyMuPDF.php">PyMuPDF</a></li> 
+            <li><a class="dropdown-item" href="utils/update_questionnaire_avant.php">Update Qbeforce</a></li> 
+            
             <li><hr class="dropdown-divider" /></li>
             <li><a class="dropdown-item" href="#!">Logout</a></li>
+            
         </ul>
     </li>
 </ul>

@@ -18,7 +18,8 @@
 - `date_devis`: Date of the quote
 - `date_devis_signe`: Date the quote was signed
 - `date_pec`: Date of coverage
-- `date_debut_formation`: Start date of the training
+- `date_convocation`: Date of invitation to training
+- `date_debut_formation`: (NEW 03/06) Start date of the training 
 - `date_fin_formation`: End date of the training
 - `date_cheque_caution_recu`: Date of receipt of the security deposit check
 - `date_envoi_attestation`: Date the certificate was sent
@@ -38,7 +39,7 @@
 - `f10_formation_en_cours`: Indicates if the training is ongoing ('Y' or 'N')
 - `f20_formation_finie`: Indicates if the training is finished ('Y' or 'N')
 
-## `formation_questionnaire_avant` 
+## formation_questionnaire_avant
 - `id_formation_dossiers`: Unique identifier for each training dossier entry, an integer type that auto-increments. This serves as a primary key.
 - `participation_prealable`: An ENUM type indicating whether the respondent has previously participated in a similar training. Values are 'OUI' (YES) and 'NON' (NO).
 - `date_debut_souhaitee`: An ENUM type specifying the desired start date for the training. Possible values are 'Dès que possible' (As soon as possible), 'Dans 15 jours' (In 15 days), and 'Dans 1 mois' (In 1 month).
@@ -114,3 +115,7 @@ This table contains contact information and other personal information of users.
 - `formation_dossiers` contains a column `id_guid` which is a foreign key referencing `user_coordonnee.id_guid`.
 - `formation_questionnaire_avant` contains a column `id_formation_dossier` which is a foreign key referencing `formation_dossiers.id_formation_dossier`. This relationship links each pre-training questionnaire to a specific training dossier, indicating which particular training the questionnaire details pertain to.
 - `lm_gestion_lm_comments` contains a column `id_guid_to` which is a foreign key referencing `formation_dossiers.id_guid`. This relationship links each comments to a specific training dossier, indicating which particular training the comments details pertain to.
+
+## Requetes de modification des tables
+- ALTER TABLE `formation_dossiers` ADD `date_convocation` DATE NULL DEFAULT NULL AFTER `id_guid`;
+
