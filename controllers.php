@@ -34,7 +34,7 @@ class EntityController extends BaseController {
             $selectedFormation = $this->getFormationById($database, $selectedFormationId);
         }
     
-        $sql = "SELECT fd.id_formation_dossiers, fd.date_devis, fd.date_debut_formation, fd.date_fin_formation, fd.date_pec, fd.pec_numero,
+        $sql = "SELECT fd.id_formation_dossiers, fd.date_devis, fd.date_debut_formation, fd.date_fin_formation, fd.date_pec, fd.pec_numero, fd.date_convocation, fd.date_evaluation, 
         CONCAT(fc.numero, ' - ', fc.titre) AS formation, ms.text AS statut,
         uc.prenom, uc.nom, u.login
         FROM formation_dossiers fd

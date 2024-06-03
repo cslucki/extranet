@@ -19,7 +19,7 @@
 - `date_devis_signe`: Date the quote was signed
 - `date_pec`: Date of coverage
 - `date_convocation`: Date of invitation to training
-- `date_debut_formation`: (NEW 03/06) Start date of the training 
+- `date_debut_formation`: Start date of the training 
 - `date_fin_formation`: End date of the training
 - `date_cheque_caution_recu`: Date of receipt of the security deposit check
 - `date_envoi_attestation`: Date the certificate was sent
@@ -27,6 +27,8 @@
 - `attestation_recu`: Indicates if the certificate has been received ('Y' or 'N')
 - `date_fond_recu_par_stagiaire`: Date the funds were received by the trainee
 - `date_solde_dossier`: Date the file was settled
+- `date_envoi_evaluation`: Date of sending training evaluation date
+- `date_evaluation`: Training evaluation date
 - `formation_collective`: Indicates if the training is collective ('Y' or 'N')
 - `nbre_seances_faites`: Number of sessions completed
 - `p10_brief_formation`: Indicates if the training brief has been done ('Y' or 'N')
@@ -118,4 +120,6 @@ This table contains contact information and other personal information of users.
 
 ## Requetes de modification des tables
 - ALTER TABLE `formation_dossiers` ADD `date_convocation` DATE NULL DEFAULT NULL AFTER `id_guid`;
+- ALTER TABLE `formation_dossiers` ADD `date_evaluation` DATE NULL DEFAULT NULL AFTER `date_solde_dossier`;
+- ALTER TABLE `formation_dossiers` ADD `date_envoi_evaluation` DATE NULL DEFAULT NULL AFTER `date_evaluation`;
 

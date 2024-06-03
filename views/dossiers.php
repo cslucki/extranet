@@ -14,28 +14,14 @@
                         <th>Stagiaire</th>
                         <th>Formation</th>
                         <th>Statut</th>
+                        <th>Convoc</th>
                         <th>Devis</th>
                         <th>Début</th>
                         <th>Fin</th>
-                        <th>Date PEC</th>
-                        <th>Numéro PEC</th>
+                        <th>Eval</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Stagiaire</th>
-                        <th>Formation</th>
-                        <th>Statut</th>
-                        <th>Devis</th>
-                        <th>Début</th>
-                        <th>Fin</th>
-                        <th>Date PEC</th>
-                        <th>Numéro PEC</th>
-                        <th>Actions</th>
-                    </tr>
-                </tfoot>
                 <tbody>
                     <?php foreach ($data as $dossier) : ?>
                     <tr>
@@ -44,14 +30,14 @@
                         <td><?php echo $dossier['prenom'] . ' ' . $dossier['nom'] . ' - ' . $dossier['login']; ?></td>
                         <td><?php echo $dossier['formation']; ?></td>
                         <td><?php echo $dossier['statut']; ?></td>
+                        <td><?php echo $dossier['date_convocation']; ?></td>
                         <td><?php echo $dossier['date_devis']; ?></td>
                         <td><?php echo $dossier['date_debut_formation']; ?></td>
                         <td><?php echo $dossier['date_fin_formation']; ?></td>
-                        <td><?php echo $dossier['date_pec']; ?></td>
-                        <td><?php echo $dossier['pec_numero']; ?></td>
-                        <td>
+                        <td><?php echo $dossier['date_evaluation']; ?></td>
+                         <td>
                             <a href="index.php?page=viewDossier&id=<?php echo $dossier['id_formation_dossiers']; ?>">Voir</a> |
-                            <a href="index.php?page=viewLocalDrive&id=<?php echo $dossier['id_formation_dossiers']; ?>">Dossier</a> |
+                            <a href="index.php?page=viewLocalDrive&id=<?php echo $dossier['id_formation_dossiers']; ?>">Docs</a> |
                             <a href="index.php?page=editDossier&id=<?php echo $dossier['id_formation_dossiers']; ?>">Éditer</a> |
                             <a href="index.php?page=deleteDossier&id=<?php echo $dossier['id_formation_dossiers']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce dossier?');">Supprimer</a>
                         </td>
