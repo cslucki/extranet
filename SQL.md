@@ -90,6 +90,22 @@ This table contains contact information and other personal information of users.
 - `msn`: User's MSN
 - `skype`: User's Skype
 
+
+
+## lm_gestion_lm_comments
+- `id`: Unique identifier for the comment
+- `id_guid_from`: Identifier of the user who made the comment
+- `id_guid_to`: Identifier of the user or entity the comment is addressed to
+- `comments`: The content of the comment
+- `only_admin`: Indicates if the comment is visible only to admins (`Y` for yes, `N` for no)
+- `date`: The date and time when the comment was made
+- `id_emailing`: Identifier for the related emailing, if any
+- `date_relance`: The follow-up date and time, if any
+- `type`: The type of comment
+- `nbre_ticket`: Number of related tickets, if any
+
+
+
 ## Relationships between tables
 
 - `formation_dossiers` contains a column `id_formation_catalogue` which is a foreign key referencing `formation_catalogue.id_formation_catalogue`.
@@ -97,3 +113,4 @@ This table contains contact information and other personal information of users.
 - `formation_dossiers` contains a column `id_guid` which is a foreign key referencing `user.id_guid`.
 - `formation_dossiers` contains a column `id_guid` which is a foreign key referencing `user_coordonnee.id_guid`.
 - `formation_questionnaire_avant` contains a column `id_formation_dossier` which is a foreign key referencing `formation_dossiers.id_formation_dossier`. This relationship links each pre-training questionnaire to a specific training dossier, indicating which particular training the questionnaire details pertain to.
+- `lm_gestion_lm_comments` contains a column `id_guid_to` which is a foreign key referencing `formation_dossiers.id_guid`. This relationship links each comments to a specific training dossier, indicating which particular training the comments details pertain to.
