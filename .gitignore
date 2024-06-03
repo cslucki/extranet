@@ -6,5 +6,6 @@ README2.md
 SRC_PHP.md
 custo/
 libs/
-node_modules 
+node_modules/
 @INPUT/*
+utils/

@@ -320,7 +320,7 @@ class EntityController extends BaseController {
 
 
 // viewLocalDrive() pour ouvrir le dossier local  
-public function viewLocalDrive() {
+    public function viewLocalDrive() {
     $page_title = 'Contenu du dossier';
     $fileId = isset($_GET['id']) ? $_GET['id'] : '';
     
@@ -383,7 +383,7 @@ public function viewLocalDrive() {
     } else {
         echo "Aucun ID de fichier spécifié.";
     }
-}
+    }
 // viewPdfContent() pour afficher le contenu du PDF
     public function viewPdfContent() {
     $page_title = 'Contenu du dossier';
@@ -406,7 +406,7 @@ public function viewLocalDrive() {
         echo "Le fichier spécifié n'existe pas.<br>";
         echo "Chemin absolu vérifié : " . realpath($filePath) . "<br>";
     }
-}
+    }
 
 
 
@@ -552,14 +552,9 @@ class MenuStatutFormationController {
         include 'views.php';
         render('manageMenuStatutFormation', ['action' => $action, 'id' => $id]);
     }
-}
+    }
 
-/**
- *  
- * CRUD pour la table formation_catalogue
- * 
- */
-
+/** CRUD pour la table formation_catalogue **/
  class FormationCatalogueController {
     public function handleRequest() {
         $action = isset($_GET['action']) ? $_GET['action'] : 'view';
@@ -692,15 +687,10 @@ class MenuStatutFormationController {
     private function renderView($action, $id) {
         include 'views.php';
         render('manageFormationCatalogue', ['action' => $action, 'id' => $id]);
+        }
     }
-}
-/**
- *  
- * CRUD pour la table formation_questionnaire_avant
- * 
- */
-
- class FormationQuestionnaireController {
+/** CRUD pour la table formation_questionnaire_avant **/
+class FormationQuestionnaireController {
     public function handleRequest() {
         $action = isset($_GET['action']) ? $_GET['action'] : 'view';
         $id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -740,21 +730,20 @@ class MenuStatutFormationController {
         return $questionnaires;
     }
 
-    public function viewFormationQuestionnaire($id) {
-        $page_title = 'Détails du Questionnaire Avant';
+    public function viewDetailFormationQuestionnaire($id) {
         $database = new Database();
-        $sql = "SELECT fqa.*, uc.prenom, uc.nom 
+        $sql = "SELECT fqa.*, uc.prenom, uc.nom, fc.numero, fc.titre 
                 FROM formation_questionnaire_avant fqa
                 JOIN formation_dossiers fd ON fqa.id_formation_dossiers = fd.id_formation_dossiers
                 JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+                JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
                 WHERE fqa.id_formation_dossiers = :id";
         $query = $database->query($sql);
         $query->execute(['id' => $id]);
         $questionnaire = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($questionnaire) {
-            include 'views.php';
-            render('viewFormationQuestionnaire', ['questionnaire' => $questionnaire], $page_title);
+            return $questionnaire;
         } else {
             header('Location: index.php?page=formationQuestionnaire');
             exit;
@@ -762,9 +751,13 @@ class MenuStatutFormationController {
     }
 
     public function editFormationQuestionnaire($id) {
-        $page_title = 'Éditer Questionnaire Avant';
         $database = new Database();
-        $sql = "SELECT * FROM formation_questionnaire_avant WHERE id_formation_dossiers = :id";
+        $sql = "SELECT fqa.*, uc.prenom, uc.nom, fc.numero, fc.titre 
+        FROM formation_questionnaire_avant fqa
+        JOIN formation_dossiers fd ON fqa.id_formation_dossiers = fd.id_formation_dossiers
+        JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+        JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
+        WHERE fqa.id_formation_dossiers = :id";
         $query = $database->query($sql);
         $query->execute(['id' => $id]);
         $questionnaire = $query->fetch(PDO::FETCH_ASSOC);
@@ -784,7 +777,13 @@ class MenuStatutFormationController {
                 'id_formation_dossiers' => $_POST['id_formation_dossiers'],
                 'participation_prealable' => $_POST['participation_prealable'],
                 'date_debut_souhaitee' => $_POST['date_debut_souhaitee'],
-                'attentes_formation' => $_POST['attentes_formation']
+                'attentes_formation' => $_POST['attentes_formation'],
+                'competence1' => $_POST['competence1'],
+                'competence2' => $_POST['competence2'],
+                'competence3' => $_POST['competence3'],
+                'competence4' => $_POST['competence4'],
+                'competence5' => $_POST['competence5'],
+                'competence6' => $_POST['competence6']
             ];
 
             $database = new Database();
@@ -792,7 +791,13 @@ class MenuStatutFormationController {
                     id_formation_dossiers = :id_formation_dossiers,
                     participation_prealable = :participation_prealable,
                     date_debut_souhaitee = :date_debut_souhaitee,
-                    attentes_formation = :attentes_formation
+                    attentes_formation = :attentes_formation,
+                    competence1 = :competence1,
+                    competence2 = :competence2,
+                    competence3 = :competence3,
+                    competence4 = :competence4,
+                    competence5 = :competence5,
+                    competence6 = :competence6
                     WHERE id_formation_dossiers = :id";
             $query = $database->query($sql);
             $query->execute($data);
@@ -812,24 +817,24 @@ class MenuStatutFormationController {
         exit;
     }
 
-    public function addFormationQuestionnaire() {
-        $page_title = 'Ajouter Questionnaire Avant';
-        include 'views.php';
-        render('addFormationQuestionnaire', [], $page_title);
-    }
-
     public function storeFormationQuestionnaire() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'id_formation_dossiers' => $_POST['id_formation_dossiers'],
                 'participation_prealable' => $_POST['participation_prealable'],
                 'date_debut_souhaitee' => $_POST['date_debut_souhaitee'],
-                'attentes_formation' => $_POST['attentes_formation']
+                'attentes_formation' => $_POST['attentes_formation'],
+                'competence1' => $_POST['competence1'],
+                'competence2' => $_POST['competence2'],
+                'competence3' => $_POST['competence3'],
+                'competence4' => $_POST['competence4'],
+                'competence5' => $_POST['competence5'],
+                'competence6' => $_POST['competence6']
             ];
 
             $database = new Database();
-            $sql = "INSERT INTO formation_questionnaire_avant (id_formation_dossiers, participation_prealable, date_debut_souhaitee, attentes_formation) 
-                    VALUES (:id_formation_dossiers, :participation_prealable, :date_debut_souhaitee, :attentes_formation)";
+            $sql = "INSERT INTO formation_questionnaire_avant (id_formation_dossiers, participation_prealable, date_debut_souhaitee, attentes_formation, competence1, competence2, competence3, competence4, competence5, competence6) 
+                    VALUES (:id_formation_dossiers, :participation_prealable, :date_debut_souhaitee, :attentes_formation, :competence1, :competence2, :competence3, :competence4, :competence5, :competence6)";
             $query = $database->query($sql);
             $query->execute($data);
 
@@ -843,6 +848,5 @@ class MenuStatutFormationController {
         render('formationquestionnaire', ['action' => $action, 'id' => $id]);
     }
 }
-
 
 ?>
