@@ -430,7 +430,7 @@ class EntityController extends BaseController {
 }
 
 /** CRUD pour la table menustatutformation **/
-class MenuStatutFormationController {
+    class MenuStatutFormationController {
     public function handleRequest() {
         $action = isset($_GET['action']) ? $_GET['action'] : 'view';
         $id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -690,7 +690,7 @@ class MenuStatutFormationController {
         }
     }
 /** CRUD pour la table formation_questionnaire_avant **/
-class FormationQuestionnaireController {
+    class FormationQuestionnaireController {
     public function handleRequest() {
         $action = isset($_GET['action']) ? $_GET['action'] : 'view';
         $id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -847,6 +847,99 @@ class FormationQuestionnaireController {
         include 'views.php';
         render('formationquestionnaire', ['action' => $action, 'id' => $id]);
     }
+    }
+
+
+/** Vuc combinée pour lm_gestion_lm_comments */
+class CommentController extends BaseController {
+    
+    
+    public function listComments() {
+        $database = new Database();
+        $sql = "SELECT fd.id_formation_dossiers, uc.prenom, uc.nom, fd.id_guid
+                FROM formation_dossiers fd
+                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid LIMIT 40";
+        $query = $database->query($sql);
+        
+        // Debug: Afficher la requête SQL
+        //echo "Executing listComments SQL query<br>";
+        
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Debug: Afficher le nombre de résultats
+        //echo "Number of results from listComments query: " . count($results) . "<br>";
+        
+        $comments = [];
+        
+        foreach ($results as $result) {
+            // Debug: Afficher le résultat actuel en cours de traitement
+            //echo "Processing result with GUID: " . $result['id_guid'] . "<br>";
+            
+            $comment_count = $this->countCommentsByGuid($result['id_guid']);
+            
+            // Debug: Afficher le nombre de commentaires récupéré
+            //echo "Comment count retrieved: " . $comment_count . "<br>";
+            
+            $result['comment_count'] = $comment_count;
+            $comments[] = $result;
+            
+            // Debug: Afficher le résultat après avoir ajouté le nombre de commentaires
+            //echo "Result after adding comment count: " . print_r($result, true) . "<br>";
+        }
+        
+        include 'views.php';
+        render('comments', ['comments' => $comments], 'Liste des Commentaires');
+    }
+
+
+
+    public function viewComments($id_guid) {
+        $database = new Database();
+        $sql = "SELECT * FROM lm_gestion_lm_comments WHERE id_guid_to = :id_guid";
+        $query = $database->query($sql);
+        $query->execute(['id_guid' => $id_guid]);
+        $comments = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        include 'views.php';
+        render('viewComments', ['comments' => $comments], 'Détails des Commentaires');
+    }
+
+    private function countCommentsByGuid($guid) {
+        $database = new Database();
+        $sql = "SELECT COUNT(id_guid_to) AS comment_count FROM lm_gestion_lm_comments WHERE id_guid_to = :guid";
+        
+        // Debug: Afficher le GUID utilisé
+        //echo "Executing countCommentsByGuid with GUID: " . $guid . "<br>";
+        
+        $query = $database->query($sql);
+        
+        // Debug: Vérifier si la requête a été préparée correctement
+        if ($query === false) {
+            echo "Failed to prepare query<br>";
+            return 0;
+        }
+        
+        // Debug: Avant l'exécution de la requête
+        //echo "Before executing query<br>";
+        
+        $query->execute(['guid' => $guid]);
+        
+        // Debug: Après l'exécution de la requête
+        //echo "After executing query<br>";
+        
+        // Debug: Afficher le résultat de la requête
+        $comment_count = $query->fetchColumn();
+        //echo "Comment count for GUID " . $guid . ": " . $comment_count . "<br>";
+        
+        return $comment_count;
+    }
+
+
+
 }
+
+
+
 
 ?>

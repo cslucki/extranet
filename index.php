@@ -93,6 +93,17 @@ switch ($page) {
             break;
 
 
+            case 'listComments': // pour afficher la liste des commentaires
+                $controller = new CommentController();
+                $controller->listComments();
+                break;
+        // view_comments
+        case 'view_comments':
+            $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+            $controller = new CommentController();
+            $controller->viewComments($id);
+            break;
+
     /****  Gestion de la page par défaut ou erreur 404  ****/
     default:
     echo "Page non trouvée.";

@@ -49,6 +49,13 @@
             <div class="sb-nav-link-icon"><i class="fas fa-commenting"></i></div>
             Entretiens préalables
         </a>
+
+        <a class="nav-link" href="/index.php?page=view_comments">
+            <div class="sb-nav-link-icon"><i class="fas fa-commenting"></i></div>
+            Commentaires
+        </a>
+
+
         <a class="nav-link" href="/under_construction.html">
             <div class="sb-nav-link-icon"><i class="fas fa-file-pdf"></i></div>
             Devis et conventions
