@@ -708,7 +708,7 @@ class EntityController extends BaseController {
 
     public function index() {
         $database = new Database();
-        $sql = "SELECT fqa.*, uc.prenom, uc.nom 
+        $sql = "SELECT fqa.*, uc.prenom, uc.nom, fd.id_guid 
                 FROM formation_questionnaire_avant fqa
                 JOIN formation_dossiers fd ON fqa.id_formation_dossiers = fd.id_formation_dossiers
                 JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
@@ -850,15 +850,26 @@ class EntityController extends BaseController {
     }
 
 
-/** Vuc combinée pour lm_gestion_lm_comments */
+/** Vue lm_gestion_lm_comments */
 class CommentController extends BaseController {
     
-    
+    public function handleRequest() {
+        $id_guid = isset($_GET['id_guid']) ? $_GET['id_guid'] : null;
+        
+        // Débogage : Afficher la valeur de id_guid
+        //echo "Debug: id_guid = " . $id_guid;
+
+        if ($id_guid) {
+            $this->viewComments($id_guid);
+        } else {
+            echo "GUID non spécifié.";
+        }
+    }
     public function listComments() {
         $database = new Database();
         $sql = "SELECT fd.id_formation_dossiers, uc.prenom, uc.nom, fd.id_guid
                 FROM formation_dossiers fd
-                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid LIMIT 40";
+                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid LIMIT 2";
         $query = $database->query($sql);
         
         // Debug: Afficher la requête SQL
@@ -893,16 +904,19 @@ class CommentController extends BaseController {
     }
 
 
-
     public function viewComments($id_guid) {
+        $page_title = 'Détails des Commentaires';
         $database = new Database();
-        $sql = "SELECT * FROM lm_gestion_lm_comments WHERE id_guid_to = :id_guid";
+        //echo "Debug: id_guid = " . $id_guid;
+
+        // Requête pour récupérer les commentaires de la table lm_gestion_lm_comments
+        $sql = "SELECT comments, date FROM lm_gestion_lm_comments WHERE id_guid_to = :id_guid ORDER by date DESC";
         $query = $database->query($sql);
         $query->execute(['id_guid' => $id_guid]);
         $comments = $query->fetchAll(PDO::FETCH_ASSOC);
 
         include 'views.php';
-        render('viewComments', ['comments' => $comments], 'Détails des Commentaires');
+        render('viewComments', ['comments' => $comments], $page_title);
     }
 
     private function countCommentsByGuid($guid) {

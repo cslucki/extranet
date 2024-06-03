@@ -149,6 +149,7 @@
                                 <td><?= $item['date_debut_souhaitee'] ?></td>
                                 <td><?= $item['attentes_formation'] ?></td>
                                 <td>
+                                <a href="?page=view_comments&id_guid=<?= $item['id_guid'] ?>">Détail</a> -
                                 <a href="?page=formationQuestionnaire&action=view_detail&id=<?= $item['id_formation_dossiers'] ?>">Voir</a> -
                                 <a href="?page=formationQuestionnaire&action=edit&id=<?= $item['id_formation_dossiers'] ?>">Modifier</a> -
                                 <a href="?page=formationQuestionnaire&action=delete&id=<?= $item['id_formation_dossiers'] ?>">Supprimer</a>

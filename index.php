@@ -91,18 +91,20 @@ switch ($page) {
             $controller = new FormationQuestionnaireController();
             $controller->handleRequest();
             break;
-
-
-            case 'listComments': // pour afficher la liste des commentaires
-                $controller = new CommentController();
-                $controller->listComments();
-                break;
+        /* Début commentaires avant formation */
+            // listComments
+        case 'listComments': // pour afficher la liste des commentaires
+            $controller = new CommentController();
+            $controller->listComments();
+            break;
         // view_comments
         case 'view_comments':
             $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
             $controller = new CommentController();
-            $controller->viewComments($id);
+            $controller->handleRequest();
+          //  $controller->viewComments($id);
             break;
+        /* Fin commentaires avant formation */
 
     /****  Gestion de la page par défaut ou erreur 404  ****/
     default:

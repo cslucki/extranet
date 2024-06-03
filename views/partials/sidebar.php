@@ -44,17 +44,19 @@
 
 
         <!-- Candidats -->
-        <div class="sb-sidenav-menu-heading">Documents</div>
+        <div class="sb-sidenav-menu-heading">Bénéficiaires</div>
         <a class="nav-link" href="/index.php?page=formationQuestionnaire">
             <div class="sb-nav-link-icon"><i class="fas fa-commenting"></i></div>
             Entretiens préalables
         </a>
-
-        <a class="nav-link" href="/index.php?page=view_comments">
+        <?php
+        /*
+        <a class="nav-link" href="/index.php?page=listComments">
             <div class="sb-nav-link-icon"><i class="fas fa-commenting"></i></div>
             Commentaires
         </a>
-
+        */
+        ?>
 
         <a class="nav-link" href="/under_construction.html">
             <div class="sb-nav-link-icon"><i class="fas fa-file-pdf"></i></div>
