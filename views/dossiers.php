@@ -14,6 +14,7 @@
                         <th>Stagiaire</th>
                         <th>Formation</th>
                         <th>Statut</th>
+                        <th>BPF</th>
                         <th>Convoc</th>
                         <th>Devis</th>
                         <th>Début</th>
@@ -31,6 +32,7 @@
                         <td><?php echo $dossier['prenom'] . ' ' . $dossier['nom'] . ' - ' . $dossier['login']; ?></td>
                         <td><?php echo $dossier['formation']; ?></td>
                         <td><?php echo $dossier['statut']; ?></td>
+                        <td><?php echo $dossier['annee_comptabilisation']; ?></td>
                         <td><?php echo $dossier['date_convocation']; ?></td>
                         <td><?php echo $dossier['date_devis']; ?></td>
                         <td><?php echo $dossier['date_debut_formation']; ?></td>

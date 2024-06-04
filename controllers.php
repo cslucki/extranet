@@ -37,7 +37,7 @@ class EntityController extends BaseController {
         $sql = "SELECT fd.id_formation_dossiers, fd.date_devis, fd.date_debut_formation, fd.date_fin_formation, fd.date_pec, fd.pec_numero, 
         fd.date_convocation, fd.date_evaluation, fd.date_envoi_evaluation, fd.date_evaluation,
         CONCAT(fc.numero, ' - ', fc.titre) AS formation, ms.text AS statut,
-        uc.prenom, uc.nom, u.login
+        uc.prenom, uc.nom, u.login, annee_comptabilisation
         FROM formation_dossiers fd
         LEFT JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
         LEFT JOIN menustatutformation ms ON fd.id_menustatutformation = ms.id
@@ -110,7 +110,7 @@ class EntityController extends BaseController {
         $page_title = 'Éditer le Dossier de Formation';
         $database = new Database();
         $sql = "SELECT fd.*, fc.titre, fc.numero, ms.text AS statut, 
-                       uc.prenom, uc.nom
+                    uc.prenom, uc.nom
                 FROM formation_dossiers fd 
                 JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue 
                 JOIN menustatutformation ms ON fd.id_menustatutformation = ms.id 
@@ -121,10 +121,11 @@ class EntityController extends BaseController {
         $dossier = $query->fetch(PDO::FETCH_ASSOC);
 
         $formations = $this->getFormations();
+        $statuts = $this->getStatuts(); // Récupérer les statuts
 
         if ($dossier) {
             include 'views.php';
-            render('edit_dossier', ['dossier' => $dossier, 'formations' => $formations], $page_title);
+            render('edit_dossier', ['dossier' => $dossier, 'formations' => $formations, 'statuts' => $statuts], $page_title);
         } else {
             header('Location: index.php?page=dossiers'); // Redirect if no dossier found
             exit;
@@ -138,6 +139,7 @@ class EntityController extends BaseController {
             $data = [
                 'id' => $id,
                 'id_formation_catalogue' => $_POST['id_formation_catalogue'],
+                'id_menustatutformation' => $_POST['id_menustatutformation'], 
                 'date_debut_formation' => $_POST['date_debut_formation'],
                 'date_fin_formation' => $_POST['date_fin_formation'],
             ];
@@ -146,6 +148,7 @@ class EntityController extends BaseController {
             $database = new Database();
             $sql = "UPDATE formation_dossiers SET
                     id_formation_catalogue = :id_formation_catalogue,
+                    id_menustatutformation = :id_menustatutformation, 
                     date_debut_formation = :date_debut_formation,
                     date_fin_formation = :date_fin_formation
                     WHERE id_formation_dossiers = :id";
@@ -236,6 +239,14 @@ class EntityController extends BaseController {
     private function getFormations() {
         $database = new Database();
         $sql = "SELECT id_formation_catalogue, numero, titre FROM formation_catalogue WHERE is_catalogue = 'Y'";
+        $query = $database->query($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+// getStatuts() est une méthode privée pour éviter les appels directs
+    private function getStatuts() {
+        $database = new Database();
+        $sql = "SELECT id, text FROM menustatutformation";
         $query = $database->query($sql);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -961,9 +972,8 @@ class EntityController extends BaseController {
 
 
 
-/**  LayoutController pour convocation **/
-
-class LayoutController extends BaseController {
+/**  LayoutController pour convocation */
+    class LayoutController extends BaseController {
     public function viewConvocation($id) {
         $database = new Database();
         $sql = "SELECT 
@@ -990,6 +1000,6 @@ class LayoutController extends BaseController {
             exit;
         }
     }
-}
+    }
 
 ?>

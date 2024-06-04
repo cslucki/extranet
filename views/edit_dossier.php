@@ -27,6 +27,16 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="id_menustatutformation">Statut de Formation:</label>
+                <select class="form-control" name="id_menustatutformation">
+                    <?php foreach ($statuts as $statut) : ?>
+                        <option value="<?php echo $statut['id']; ?>" <?php echo ($statut['id'] == $dossier['id_menustatutformation']) ? 'selected' : ''; ?>>
+                            <?php echo $statut['text']; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="date_debut_formation">Date de début:</label>
                 <input type="date" class="form-control" name="date_debut_formation" value="<?php echo $dossier['date_debut_formation']; ?>" required>
             </div>
