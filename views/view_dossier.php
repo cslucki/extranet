@@ -7,7 +7,7 @@
     <div class="card-body">
         <div class="row mb-3">
             <div class="col-md-6">
-                <p class="card-title"><strong>Formation :</strong> <?php echo htmlspecialchars($dossier['titre']); ?></p>
+                <h6 class="card-title"><strong>Formation :</strong> <?php echo htmlspecialchars($dossier['titre']); ?></h6>
             </div>
             <div class="col-md-6">
                 <h5 class="card-text"><strong>Stagiaire :</strong> <?php echo htmlspecialchars($dossier['prenom'] . ' ' . $dossier['nom']); ?></h5>
