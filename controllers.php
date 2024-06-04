@@ -9,10 +9,38 @@ class BaseController {
 class HomeController extends BaseController {
     public function index() {
         $page_title = 'Home';
+        $database = new Database();
+        
+        // Récupérer le nombre total de dossiers de formation
+        $totalDossiers = $this->getTotalDossiers($database);
+        
+        // Récupérer les sous-totaux de dossiers par année
+        $dossiersByYear = $this->getDossiersByYear($database);
+        
         include 'views.php';
-        render('home', [], $page_title);
+        render('home', [
+            'totalDossiers' => $totalDossiers,
+            'dossiersByYear' => $dossiersByYear
+        ], $page_title);
     }
+
+    private function getTotalDossiers($database) {
+        $sql = "SELECT COUNT(*) AS total FROM formation_dossiers";
+        $query = $database->query($sql);
+        $query->execute();
+        return $query->fetchColumn();
     }
+
+    private function getDossiersByYear($database) {
+        $sql = "SELECT annee_comptabilisation, COUNT(*) AS total 
+                FROM formation_dossiers 
+                GROUP BY annee_comptabilisation 
+                ORDER BY annee_comptabilisation";
+        $query = $database->query($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
 
 // Contrôleur pour les entités (dossiers, utilisateurs, etc.)
 class EntityController extends BaseController {
