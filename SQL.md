@@ -41,6 +41,8 @@
 - `f10_dossier_termine`: Indicates if the training file is finished ('Y' or 'N')
 - `annee_comptabilisation `: Indicates accounting year (YEAR)
 - `adresse_url_support`: URL for Online traing support
+- `eval1` to `eval3` : Training evaluation questions (1 to 3)
+- `eval_note`: Score out of 5 regarding the training evaluation
 
 
 ## formation_questionnaire_avant

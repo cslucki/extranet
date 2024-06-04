@@ -39,7 +39,12 @@
                 <li><a class="dropdown-item" href="/utils/ImportExcel.php">Import XL</a></li>
                 <li><a class="dropdown-item" href="/utils/DossiersUtil.php">Utilitaires Dossiers</a></li> 
                 <li><a class="dropdown-item" href="utils/update_date_entretien.php">Update date_entretien</a></li> 
-                <li><a class="dropdown-item" href="utils/update_date_convocation.php">Update date_convocation</a></li> 
+                <li><a class="dropdown-item" href="utils/update_date_convocation.php">Update date_convocation</a></li>
+                <li><a class="dropdown-item" href="utils/update_eval_in_formation_dossiers.php">Update eval à froid</a></li>
+                <li><a class="dropdown-item" href="utils/update_pre_eval_in_formation_dossiers.php">Update eval à chaud</a></li>
+                
+
+
                 <li><hr class="dropdown-divider" /></li>
                 <li><a class="dropdown-item" href="#!">Logout</a></li>
             </ul>

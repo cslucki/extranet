@@ -7,6 +7,7 @@ class BaseController {
 
 // Contrôleur pour la page d'accueil
 class HomeController extends BaseController {
+// index() pour afficher la page d'accueil
     public function index() {
         $page_title = 'Home';
         $database = new Database();
@@ -23,22 +24,27 @@ class HomeController extends BaseController {
         // Récupérer les sous-totaux par année et par type de formation
         $dossiersByYearAndType = $this->getDossiersByYearAndType($database);
         
+        // Récupérer la moyenne des notes des formations
+        $averageEvalNote = $this->getAverageEvalNote($database);
+        
+        
         include 'views.php';
         render('home', [
             'totalDossiers' => $totalDossiers,
             'dossiersByYear' => $dossiersByYear,
             'formationsSubtotal' => $formationsSubtotal,
-            'dossiersByYearAndType' => $dossiersByYearAndType
+            'dossiersByYearAndType' => $dossiersByYearAndType,
+            'averageEvalNote' => $averageEvalNote
         ], $page_title);
     }
-
+// getTotalDossiers() pour récupérer le nombre total de dossiers
     private function getTotalDossiers($database) {
         $sql = "SELECT COUNT(*) AS total FROM formation_dossiers";
         $query = $database->query($sql);
         $query->execute();
         return $query->fetchColumn();
     }
-
+// getDossiersByYear() pour récupérer les dossiers par année
     private function getDossiersByYear($database) {
         $sql = "SELECT annee_comptabilisation, COUNT(*) AS total 
                 FROM formation_dossiers 
@@ -48,7 +54,7 @@ class HomeController extends BaseController {
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
-
+// getFormationsSubtotal() pour récupérer les sous-totaux par type de formation
     private function getFormationsSubtotal($database) {
         $sql = "SELECT fc.id_formation_catalogue, fc.numero, fc.titre, COUNT(fd.id_formation_catalogue) AS total
                 FROM formation_dossiers fd
@@ -59,7 +65,7 @@ class HomeController extends BaseController {
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
-
+// getDossiersByYearAndType() pour récupérer les sous-totaux par année et par type de formation
     private function getDossiersByYearAndType($database) {
         $sql = "SELECT annee_comptabilisation, fc.id_formation_catalogue, fc.numero, fc.titre, COUNT(fd.id_formation_catalogue) AS total
                 FROM formation_dossiers fd
@@ -69,6 +75,13 @@ class HomeController extends BaseController {
         $query = $database->query($sql);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+// getAverageEvalNote() pour récupérer la moyenne des notes des formations
+    private function getAverageEvalNote($database) {
+        $sql = "SELECT AVG(eval_note) AS average FROM formation_dossiers WHERE eval_note IS NOT NULL";
+        $query = $database->query($sql);
+        $query->execute();
+        return $query->fetchColumn();
     }
 }
 
@@ -100,7 +113,8 @@ class EntityController extends BaseController {
     $sql = "SELECT fd.id_formation_dossiers, fd.date_devis, fd.date_debut_formation, fd.date_fin_formation, fd.date_pec, fd.pec_numero, 
     fd.date_convocation, fd.date_evaluation, fd.date_envoi_evaluation, fd.date_evaluation,
     CONCAT(fc.numero, ' - ', fc.titre) AS formation, ms.text AS statut,
-    uc.prenom, uc.nom, u.login, annee_comptabilisation
+    uc.prenom, uc.nom, u.login, annee_comptabilisation, 
+    eval_note
     FROM formation_dossiers fd
     LEFT JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
     LEFT JOIN menustatutformation ms ON fd.id_menustatutformation = ms.id
@@ -151,7 +165,10 @@ class EntityController extends BaseController {
     $sql = "SELECT fd.*, fc.titre, ms.text AS statut, 
                    uc.prenom, uc.nom, u.login,  -- Ajout du champ login ici
                    adresse_url_support, -- Ajout du champ adresse_url_support ici
-                   fqa.attentes_formation, fqa.competence1, fqa.competence2, fqa.competence3, fqa.competence4, fqa.competence5, fqa.competence6
+                   fqa.attentes_formation, 
+                   fqa.competence1, fqa.competence2, fqa.competence3, fqa.competence4, fqa.competence5, 
+                   fqa.competence6,
+                   eval_note, eval1, eval2, eval3
             FROM formation_dossiers fd 
             JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue 
             JOIN menustatutformation ms ON fd.id_menustatutformation = ms.id 
@@ -1093,6 +1110,7 @@ class EntityController extends BaseController {
 
 /**  LayoutController pour convocation */
     class LayoutController extends BaseController {
+// viewConvocation() pour afficher la convocation
     public function viewConvocation($id) {
         $database = new Database();
         $sql = "SELECT 
@@ -1119,6 +1137,80 @@ class EntityController extends BaseController {
             exit;
         }
     }
+// viewCertificat() pour afficher le certificat
+    public function viewCertificat($id) {
+        $page_title = 'Certificat de Réalisation';
+        $database = new Database();
+        $sql = "SELECT 
+                 DATE_FORMAT(fd.date_debut_formation, '%e/%m/%Y') AS date_debut_formation, 
+                    DATE_FORMAT(fd.date_fin_formation, '%e/%m/%Y') AS date_fin_formation, 
+        
+ 
+                       uc.prenom, uc.nom, 
+                       fc.titre, id_formation_dossiers
+                FROM formation_dossiers fd
+                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+                JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
+                WHERE fd.id_formation_dossiers = :id";
+        $query = $database->query($sql);
+        $query->execute(['id' => $id]);
+        $dossier = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($dossier) {
+            include 'views.php';
+            render('view_certificat', ['dossier' => $dossier], $page_title);
+        } else {
+            header('Location: index.php?page=dossiers'); // Redirection si aucun dossier trouvé
+            exit;
+        }
     }
+// viewEvaluation() pour afficher l'évaluation
+    public function viewEvaluation($id) {
+        $page_title = 'Évaluation à froid';
+        $database = new Database();
+        $sql = "SELECT fd.date_fin_formation, fd.eval1, fd.eval2, fd.eval3, fd.eval_note,
+                       uc.prenom, uc.nom,
+                       fc.numero, fc.titre, id_formation_dossiers
+                FROM formation_dossiers fd
+                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+                JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
+                WHERE fd.id_formation_dossiers = :id";
+        $query = $database->query($sql);
+        $query->execute(['id' => $id]);
+        $dossier = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($dossier) {
+            include 'views.php';
+            render('view_evaluation', ['dossier' => $dossier], $page_title);
+        } else {
+            header('Location: index.php?page=dossiers'); // Redirection si aucun dossier trouvé
+            exit;
+        }
+    }
+
+
+// viewPreEvaluation() pour afficher la pré-évaluation
+    public function viewPreEvaluation($id) {
+        $page_title = 'Évaluation sommative';
+        $database = new Database();
+        $sql = "SELECT fd.*, fc.numero, fc.titre, uc.prenom, uc.nom
+                FROM formation_dossiers fd
+                JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
+                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+                WHERE fd.id_formation_dossiers = :id";
+        $query = $database->query($sql);
+        $query->execute(['id' => $id]);
+        $dossier = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($dossier) {
+            include 'views.php';
+            render('view_pre_evaluation', ['dossier' => $dossier], $page_title);
+        } else {
+            header('Location: index.php?page=dossiers'); // Redirect if no dossier found
+            exit;
+        }
+    }
+
+}
 
 ?>

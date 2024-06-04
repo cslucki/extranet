@@ -47,17 +47,22 @@
                     </div>
                     <div class="card-body">
                         <p><strong>Statut :</strong> <?php echo htmlspecialchars($dossier['statut']); ?></p>
+
+                        <p><strong>Nombre de séances faites :</strong> <?php echo htmlspecialchars($dossier['nbre_seances_faites']); ?> - <a href="<?php echo $dossier['adresse_url_support']; ?>" target="_blank">Voir le Drive de formation</a>
+
                         <p><strong>Dossier terminé :</strong> 
                             <?php echo $dossier['f10_dossier_termine'] == 'Y' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'; ?>
+
+                            - <a href="/index.php?page=view_certificat&id=<?php echo $dossier['id_formation_dossiers']; ?>">Voir le certificat de réalisation</a>
+
+                            
                         </p>
-                        <p><strong>Dates formation :</strong> <?php echo htmlspecialchars($dossier['date_debut_formation'] . ' - ' . $dossier['date_fin_formation']); ?></p>
+                        <p><strong>Dates formation :</strong> <?php echo htmlspecialchars($dossier['date_debut_formation'] . ' au ' . $dossier['date_fin_formation']); ?></p>
                         <p>
                             <strong>Convocation :</strong> <?php echo htmlspecialchars($dossier['date_convocation']); ?> - 
                              <a href="/index.php?page=view_convocation&id=<?php echo $dossier['id_formation_dossiers']; ?>">Voir la convocation</a>
                         </p>
-                        <p><strong>Seances faites :</strong> <?php echo htmlspecialchars($dossier['nbre_seances_faites']); ?> - 
-                    
-                        <a href="<?php echo $dossier['adresse_url_support']; ?>" target="_blank">Voir le Drive de formation</a>
+                        
                     
                     </p>
                     </div>
@@ -148,9 +153,14 @@
                         <h5>Evaluations</h5>
                     </div>
                     <div class="card-body">
-                        <p><strong>Evaluation sommative :</strong> <?php echo htmlspecialchars($dossier['date_fin_formation']); ?></p>
-                        <p><strong>Evaluation à froid :</strong> envoyé le <?php echo htmlspecialchars($dossier['date_envoi_evaluation']); ?> - évaluation le <?php echo htmlspecialchars($dossier['date_evaluation']); ?></p>
+                        <p><strong>Evaluation sommative :</strong> <?php echo htmlspecialchars($dossier['date_fin_formation']); ?> - <a href="/index.php?page=view_pre_evaluation&id=<?php echo $dossier['id_formation_dossiers']; ?>">Voir l'évaluation</a></p>
+                        <p><strong>Evaluation à froid :</strong> demandée le <?php echo htmlspecialchars($dossier['date_envoi_evaluation']); ?> - effectuée le <?php echo htmlspecialchars($dossier['date_evaluation']); ?></p>
+                        <ul>
+                            <li>Note : <?php echo $dossier['eval_note']; ?>
+                            <li><a href="/index.php?page=view_evaluation&id=<?php echo $dossier['id_formation_dossiers']; ?>">Voir l'évaluation à froid</a>
+                        </ul>
                         <p><strong>Attentes avant la formation :</strong> <?php echo htmlspecialchars($dossier['attentes_formation']); ?></p>
+                        <p><strong>Suggestions évaluation sommative :</strong> <?php echo htmlspecialchars($dossier['pre_eval_note']); ?></p>
                     </div>
                 </div>
                 <div class="card mb-4">

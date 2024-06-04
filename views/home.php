@@ -9,6 +9,7 @@
                 </div>
                 <div class="card-body">
                     <p><strong>Nombre total de dossiers de formation :</strong> <?php echo $totalDossiers; ?></p>
+                    <p><strong>Moyenne des notes de formation :</strong> <?php echo number_format($averageEvalNote, 2); ?></p>
                     
                     <h5>Sous-totaux par type de formation toutes années confondues :</h5>
                     <ul>
@@ -42,6 +43,17 @@
                             </li>
                         <?php endforeach; ?>
                     </ul>
+    <h5>Sous-totaux par année :</h5>
+                    <ul>
+                        <?php foreach ($dossiersByYear as $yearData) : ?>
+                            <li>
+                                <a href="index.php?page=dossiers&annee=<?php echo $yearData['annee_comptabilisation']; ?>">
+                                    <?php echo $yearData['annee_comptabilisation']; ?> : <?php echo $yearData['total']; ?> dossiers
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+
                 </div>
             </div>
         </p>
