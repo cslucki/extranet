@@ -8,4 +8,6 @@ custo/
 libs/
 node_modules/
 @INPUT/*
-utils/
+utils/*
+Prompt.txt
+utils/DossiersUtil.php

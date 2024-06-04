@@ -33,13 +33,13 @@
 - `formation_collective`: Indicates if the training is collective ('Y' or 'N')
 - `nbre_seances_faites`: Number of sessions completed
 - `p10_brief_formation`: Indicates if the training brief has been done ('Y' or 'N')
-- `p20_refaire_argu`: Indicates if the arguments need to be redone ('Y' or 'N')
+- `p20_individualisation`: Indicates if the training has been individualized? ('Y' or 'N')
 - `p30_ae_en_crea`: Indicates if the AE is being created ('Y' or 'N')
-- `p40_attestation_cfp_en_attente`: Indicates if the CFP certificate is pending ('Y' or 'N')
-- `p50_attente_pec`: Indicates if the coverage is pending ('Y' or 'N')
-- `p60_pec_ok`: Indicates if the coverage is okay ('Y' or 'N')
-- `f10_formation_en_cours`: Indicates if the training is ongoing ('Y' or 'N')
-- `f20_formation_finie`: Indicates if the training is finished ('Y' or 'N')
+- `p40_attestation_cfp`: Indicates if the CFP certificate is obtained ('Y' or 'N')
+- `p50_demande_pec`: Indicates if the funding request has been made ('Y' or 'N')
+- `p60_pec_ok`: Indicates if the funding is okay ('Y' or 'N')
+- `f10_dossier_termine`: Indicates if the training file is finished ('Y' or 'N')
+
 
 ## formation_questionnaire_avant
 - `id_formation_dossiers`: Unique identifier for each training dossier entry, an integer type that auto-increments. This serves as a primary key.

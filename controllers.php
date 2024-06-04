@@ -77,28 +77,34 @@ class EntityController extends BaseController {
 
 
 // viewDossier() pour afficher les détails d'un dossier
-    public function viewDossier($id) {
-        $page_title = 'Détails du Dossier de Formation';
-        $database = new Database();
-        $sql = "SELECT fd.*, fc.titre, ms.text AS statut, 
-                       uc.prenom, uc.nom
-                FROM formation_dossiers fd 
-                JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue 
-                JOIN menustatutformation ms ON fd.id_menustatutformation = ms.id 
-                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
-                WHERE fd.id_formation_dossiers = :id";
-        $query = $database->query($sql);
-        $query->execute(['id' => $id]);
-        $dossier = $query->fetch(PDO::FETCH_ASSOC);
+public function viewDossier($id) {
+    $page_title = 'Détails du Dossier de Formation';
+    $database = new Database();
+    $sql = "SELECT fd.*, fc.titre, ms.text AS statut, 
+                   uc.prenom, uc.nom,
+                   fqa.attentes_formation, fqa.competence1, fqa.competence2, fqa.competence3, fqa.competence4, fqa.competence5, fqa.competence6
+            FROM formation_dossiers fd 
+            JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue 
+            JOIN menustatutformation ms ON fd.id_menustatutformation = ms.id 
+            JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+            LEFT JOIN formation_questionnaire_avant fqa ON fd.id_formation_dossiers = fqa.id_formation_dossiers
+            WHERE fd.id_formation_dossiers = :id";
+    $query = $database->query($sql);
+    $query->execute(['id' => $id]);
+    $dossier = $query->fetch(PDO::FETCH_ASSOC);
 
-        if ($dossier) {
-            include 'views.php';
-            render('view_dossier', ['dossier' => $dossier], $page_title);
-        } else {
-            header('Location: index.php?page=dossiers'); // Redirect if no dossier found
-            exit;
-        }
+    if ($dossier) {
+        include 'views.php';
+        render('view_dossier', ['dossier' => $dossier], $page_title);
+    } else {
+        header('Location: index.php?page=dossiers'); // Redirect if no dossier found
+        exit;
     }
+}
+
+
+
+
 // editDossier() pour afficher le formulaire de modification
     public function editDossier($id) {
         $page_title = 'Éditer le Dossier de Formation';
