@@ -25,7 +25,6 @@
 - `date_cheque_caution_recu`: Date of receipt of the security deposit check
 - `date_envoi_attestation`: Date the certificate was sent
 - `moyen_paiement`: Payment method (CH for check, VIR for bank transfer)
-- `attestation_recu`: Indicates if the certificate has been received ('Y' or 'N')
 - `date_fond_recu_par_stagiaire`: Date the funds were received by the trainee
 - `date_solde_dossier`: Date the file was settled
 - `date_envoi_evaluation`: Date of sending training evaluation date
@@ -38,6 +37,7 @@
 - `p40_attestation_cfp`: Indicates if the CFP certificate is obtained ('Y' or 'N')
 - `p50_demande_pec`: Indicates if the funding request has been made ('Y' or 'N')
 - `p60_pec_ok`: Indicates if the funding is okay ('Y' or 'N')
+- `p70_certificat_fin`: Indicates if the certificate of completion of training has been sent ('Y' or 'N')
 - `f10_dossier_termine`: Indicates if the training file is finished ('Y' or 'N')
 
 

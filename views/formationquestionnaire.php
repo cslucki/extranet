@@ -100,29 +100,83 @@
                 <?php
                 break;
 
-            case 'view_detail':
-                $questionnaire = $controller->viewDetailFormationQuestionnaire($id);
-                ?>
-                <h2>Détail de l'entretien préalable</h2>
-                <div>
-                    <strong>ID Formation Dossiers:</strong> <?= $questionnaire['id_formation_dossiers'] ?><br>
-                    <strong>Date :</strong> <?= $questionnaire['date_entretien'] ?><br>
-                    <strong>Prénom:</strong> <?= $questionnaire['prenom'] ?><br>
-                    <strong>Nom:</strong> <?= $questionnaire['nom'] ?><br>
-                    <strong>Numéro de la formation:</strong> <?= $questionnaire['numero'] ?><br>
-                    <strong>Titre de la formation:</strong> <?= $questionnaire['titre'] ?><br>
-                    <strong>Participation Préalable:</strong> <?= $questionnaire['participation_prealable'] ?><br>
-                    <strong>Date Début Souhaitée:</strong> <?= $questionnaire['date_debut_souhaitee'] ?><br>
-                    <strong>Attentes Formation:</strong> <?= $questionnaire['attentes_formation'] ?><br>
-                    <strong>Compétence 1:</strong> <?= $questionnaire['competence1'] ?><br>
-                    <strong>Compétence 2:</strong> <?= $questionnaire['competence2'] ?><br>
-                    <strong>Compétence 3:</strong> <?= $questionnaire['competence3'] ?><br>
-                    <strong>Compétence 4:</strong> <?= $questionnaire['competence4'] ?><br>
-                    <strong>Compétence 5:</strong> <?= $questionnaire['competence5'] ?><br>
-                    <strong>Compétence 6:</strong> <?= $questionnaire['competence6'] ?><br>
-                </div>
-                <?php
-                break;
+                case 'view_detail':
+                    $questionnaire = $controller->viewDetailFormationQuestionnaire($id);
+                    ?>
+                    <h2>Détail de l'entretien préalable</h2>
+                    <div class="card">
+                        <div class="card-header">
+                            Détails du Questionnaire
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">ID Formation Dossiers:</th>
+                                        <td><?= $questionnaire['id_formation_dossiers'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Date :</th>
+                                        <td><?= $questionnaire['date_entretien'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Prénom:</th>
+                                        <td><?= $questionnaire['prenom'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Nom:</th>
+                                        <td><?= $questionnaire['nom'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Numéro de la formation:</th>
+                                        <td><?= $questionnaire['numero'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Titre de la formation:</th>
+                                        <td><?= $questionnaire['titre'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Participation Préalable:</th>
+                                        <td><?= $questionnaire['participation_prealable'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Date Début Souhaitée:</th>
+                                        <td><?= $questionnaire['date_debut_souhaitee'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Attentes Formation:</th>
+                                        <td><?= $questionnaire['attentes_formation'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Compétence 1:</th>
+                                        <td><?= $questionnaire['competence1'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Compétence 2:</th>
+                                        <td><?= $questionnaire['competence2'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Compétence 3:</th>
+                                        <td><?= $questionnaire['competence3'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Compétence 4:</th>
+                                        <td><?= $questionnaire['competence4'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Compétence 5:</th>
+                                        <td><?= $questionnaire['competence5'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Compétence 6:</th>
+                                        <td><?= $questionnaire['competence6'] ?></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <?php
+                    break;
 
             case 'view':
             default:

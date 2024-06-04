@@ -9,5 +9,6 @@ libs/
 node_modules/
 @INPUT/*
 utils/*
-Prompt.txt
+Prompt.md
+VueDossier.md
 utils/DossiersUtil.php

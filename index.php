@@ -105,7 +105,12 @@ switch ($page) {
           //  $controller->viewComments($id);
             break;
         /* Fin commentaires avant formation */
-
+        /* Convocation */
+        case 'view_convocation': // pour afficher la convocation
+            $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+            $controller = new LayoutController();
+            $controller->viewConvocation($id);
+            break;
     /****  Gestion de la page par défaut ou erreur 404  ****/
     default:
     echo "Page non trouvée.";

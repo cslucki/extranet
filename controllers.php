@@ -77,8 +77,8 @@ class EntityController extends BaseController {
 
 
 // viewDossier() pour afficher les détails d'un dossier
-public function viewDossier($id) {
-    $page_title = 'Détails du Dossier de Formation';
+    public function viewDossier($id) {
+    $page_title = 'Détails du dossier de formation';
     $database = new Database();
     $sql = "SELECT fd.*, fc.titre, ms.text AS statut, 
                    uc.prenom, uc.nom,
@@ -100,7 +100,7 @@ public function viewDossier($id) {
         header('Location: index.php?page=dossiers'); // Redirect if no dossier found
         exit;
     }
-}
+    }
 
 
 
@@ -414,6 +414,8 @@ public function viewDossier($id) {
         echo "Chemin absolu vérifié : " . realpath($filePath) . "<br>";
     }
     }
+
+
 
 
 
@@ -954,10 +956,40 @@ public function viewDossier($id) {
         //echo "Comment count for GUID " . $guid . ": " . $comment_count . "<br>";
         
         return $comment_count;
+        }
     }
+
+
+
+/**  LayoutController pour convocation **/
+
+class LayoutController extends BaseController {
+    public function viewConvocation($id) {
+        $database = new Database();
+        $sql = "SELECT 
+                    DATE_FORMAT(fd.date_convocation, '%e/%m/%Y') AS date_convocation, 
+                    DATE_FORMAT(fd.date_debut_formation, '%e/%m/%Y') AS date_debut_formation, 
+                    DATE_FORMAT(fd.date_fin_formation, '%e/%m/%Y') AS date_fin_formation, 
+                    uc.prenom, 
+                    uc.nom, 
+                    fc.titre,
+                    fd.id_formation_dossiers, fc.numero 
+                FROM formation_dossiers fd
+                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+                JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
+                WHERE fd.id_formation_dossiers = :id";
+        $query = $database->query($sql);
+        $query->execute(['id' => $id]);
+        $convocation = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($convocation) {
+            include 'views.php';
+            render('view_convocation', ['convocation' => $convocation], 'Convocation à la Formation');
+        } else {
+            header('Location: index.php?page=dossiers'); // Redirection si aucune convocation trouvée
+            exit;
+        }
     }
-
-
-
+}
 
 ?>
