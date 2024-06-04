@@ -1,0 +1,42 @@
+
+A gauche : 
+Nom de la formation : $dossier['titre']
+Nom du stagiaire : $dossier['prenom'] . ' ' . $dossier['nom']
+
+
+
+Organisation de la formation
+- `date_convocation`: Date of invitation to training
+- `date_debut_formation`: Start date of the training 
+- `date_fin_formation`: End date of the training
+- `nbre_seances_faites`: Number of sessions completed
+- `date_envoi_evaluation`: Date of sending training evaluation date
+- `date_evaluation`: Training evaluation date
+
+Check-list de la formation
+- `p10_brief_formation`: Indicates if the training brief has been done ('Y' or 'N')
+- `p20_refaire_argu`: Indicates if the arguments need to be redone ('Y' or 'N')
+- `p30_ae_en_crea`: Indicates if the AE is being created ('Y' or 'N')
+- `p40_attestation_cfp_en_attente`: Indicates if the CFP certificate is pending ('Y' or 'N')
+- `p50_attente_pec`: Indicates if the coverage is pending ('Y' or 'N')
+- `p60_pec_ok`: Indicates if the coverage is okay ('Y' or 'N')
+- `f10_formation_en_cours`: Indicates if the training is ongoing ('Y' or 'N')
+- `f20_formation_finie`: Indicates if the training is finished ('Y' or 'N')
+
+
+A droite : 
+Informations sur la prise en charge des formations
+- `date_devis`: Date of the quote
+- `date_devis_signe`: Date the quote was signed
+- `date_pec`: Date of coverage
+- `pec_numero`: Coverage number
+
+Gestion comptable du dossier 
+- `date_cheque_caution_recu`: Date of receipt of the security deposit check
+- `date_envoi_attestation`: Date the certificate was sent
+- `attestation_recu`: Indicates if the certificate has been received ('Y' or 'N')
+- `moyen_paiement`: Payment method (CH for check, VIR for bank transfer)
+- `date_fond_recu_par_stagiaire`: Date the funds were received by the trainee
+- `date_solde_dossier`: Date the file was settled
+
+
