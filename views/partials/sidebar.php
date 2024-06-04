@@ -3,16 +3,6 @@
     <div class="nav">
         <!-- Gestion -->
         <div class="sb-sidenav-menu-heading">Gestion</div>
-            <a class="nav-link" href="/index.php?page=dossiers">
-                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                Gestion dossiers
-            </a>
-            <a class="nav-link" href="/index.php?page=showLogin">
-                <div class="sb-nav-link-icon"><i class="fas fa-plus-circle"></i></div>
-                Nouveau dossier
-            </a>
-        <!-- Outils -->
-        <div class="sb-sidenav-menu-heading">Outils</div>
         
         <!-- Menu Statut de formation -->
         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -93,5 +83,5 @@
 
 
 <div class="sb-sidenav-footer">
-    <div class="small">Logged in as:</div>
-    ADmin
+    <div class="small">Connecté en tant que :</div>
+    Cyril SLUCKI - Directeur

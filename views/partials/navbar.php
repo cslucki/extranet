@@ -19,14 +19,15 @@
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <!-- Ajout des boutons pour Gestion dossier et Nouveau dossier avec espacement -->
             <li class="nav-item me-2">
-                <a class="nav-link btn btn-primary" href="//index.php?page=formationQuestionnaire">Entretiens préalables</a>
-            </li>
-            <li class="nav-item me-2">
-                <a class="nav-link btn btn-secondary" href="/index.php?page=showLogin">Nouveau dossier</a>
+                <a class="nav-link btn btn-success" href="/index.php?page=showLogin">Nouveau dossier</a>
             </li>
             <li class="nav-item me-2">
                 <a class="nav-link btn btn-primary" href="/index.php?page=dossiers">Gestion dossiers</a>
             </li>
+            <li class="nav-item me-2">
+                <a class="nav-link btn btn-secondary" href="//index.php?page=formationQuestionnaire">Qualité</a>
+            </li>
+
         </ul>
     </div>
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
