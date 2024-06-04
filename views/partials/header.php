@@ -13,29 +13,9 @@
     
     </head>
     <body>
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="/index.php"><b>Association AMT</b></a>
-            <!-- Sidebar Toggle-->
-            <button class="btn   order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <?php
-            /*
-            <form name="searchForm" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input name="searchQuery" class="form-control" type="text" placeholder="Rechercher..." aria-label="Rechercher..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-            */
-            ?>
-            <!-- Navbar-->
-            <div class="d-none d-md-inline-block  ms-auto me-0 me-md-3 my-2 my-md-0">
-          <?php include $_SERVER['DOCUMENT_ROOT'].'/views/partials/navbar.php'; ?>
-            </div>
-        </nav>
         
-		
+        <!-- Navbar inclusion -->  
+        <?php include $_SERVER['DOCUMENT_ROOT'].'/views/partials/navbar.php'; ?>
 		<!-- Sidebar-->
 		<div id="layoutSidenav">
             <div id="layoutSidenav_nav">

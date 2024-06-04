@@ -18,6 +18,7 @@
                         <th>Devis</th>
                         <th>Début</th>
                         <th>Fin</th>
+                        <th>Envoi eval</th>
                         <th>Eval</th>
                         <th>Actions</th>
                     </tr>
@@ -34,6 +35,7 @@
                         <td><?php echo $dossier['date_devis']; ?></td>
                         <td><?php echo $dossier['date_debut_formation']; ?></td>
                         <td><?php echo $dossier['date_fin_formation']; ?></td>
+                        <td><?php echo $dossier['date_envoi_evaluation']; ?></td>
                         <td><?php echo $dossier['date_evaluation']; ?></td>
                          <td>
                             <a href="index.php?page=viewDossier&id=<?php echo $dossier['id_formation_dossiers']; ?>">Voir</a> |

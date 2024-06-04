@@ -18,6 +18,7 @@
 - `date_devis`: Date of the quote
 - `date_devis_signe`: Date the quote was signed
 - `date_pec`: Date of coverage
+- `pec_numero`: Coverage number
 - `date_convocation`: Date of invitation to training
 - `date_debut_formation`: Start date of the training 
 - `date_fin_formation`: End date of the training
@@ -37,7 +38,6 @@
 - `p40_attestation_cfp_en_attente`: Indicates if the CFP certificate is pending ('Y' or 'N')
 - `p50_attente_pec`: Indicates if the coverage is pending ('Y' or 'N')
 - `p60_pec_ok`: Indicates if the coverage is okay ('Y' or 'N')
-- `pec_numero`: Coverage number
 - `f10_formation_en_cours`: Indicates if the training is ongoing ('Y' or 'N')
 - `f20_formation_finie`: Indicates if the training is finished ('Y' or 'N')
 
@@ -122,4 +122,4 @@ This table contains contact information and other personal information of users.
 - ALTER TABLE `formation_dossiers` ADD `date_convocation` DATE NULL DEFAULT NULL AFTER `id_guid`;
 - ALTER TABLE `formation_dossiers` ADD `date_evaluation` DATE NULL DEFAULT NULL AFTER `date_solde_dossier`;
 - ALTER TABLE `formation_dossiers` ADD `date_envoi_evaluation` DATE NULL DEFAULT NULL AFTER `date_evaluation`;
-
+- ALTER TABLE `formation_dossiers` CHANGE `pec_numero` `pec_numero` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL AFTER `date_pec`;
