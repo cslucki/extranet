@@ -17,10 +17,18 @@ class HomeController extends BaseController {
         // Récupérer les sous-totaux de dossiers par année
         $dossiersByYear = $this->getDossiersByYear($database);
         
+        // Récupérer les sous-totaux par type de formation pour toutes les années
+        $formationsSubtotal = $this->getFormationsSubtotal($database);
+        
+        // Récupérer les sous-totaux par année et par type de formation
+        $dossiersByYearAndType = $this->getDossiersByYearAndType($database);
+        
         include 'views.php';
         render('home', [
             'totalDossiers' => $totalDossiers,
-            'dossiersByYear' => $dossiersByYear
+            'dossiersByYear' => $dossiersByYear,
+            'formationsSubtotal' => $formationsSubtotal,
+            'dossiersByYearAndType' => $dossiersByYearAndType
         ], $page_title);
     }
 
@@ -40,63 +48,95 @@ class HomeController extends BaseController {
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    private function getFormationsSubtotal($database) {
+        $sql = "SELECT fc.id_formation_catalogue, fc.numero, fc.titre, COUNT(fd.id_formation_catalogue) AS total
+                FROM formation_dossiers fd
+                JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
+                GROUP BY fc.id_formation_catalogue, fc.numero, fc.titre
+                ORDER BY fc.numero";
+        $query = $database->query($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getDossiersByYearAndType($database) {
+        $sql = "SELECT annee_comptabilisation, fc.id_formation_catalogue, fc.numero, fc.titre, COUNT(fd.id_formation_catalogue) AS total
+                FROM formation_dossiers fd
+                JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
+                GROUP BY annee_comptabilisation, fc.id_formation_catalogue, fc.numero, fc.titre
+                ORDER BY annee_comptabilisation, fc.numero";
+        $query = $database->query($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 // Contrôleur pour les entités (dossiers, utilisateurs, etc.)
 class EntityController extends BaseController {
 // dossiers() pour afficher la liste des dossiers - méthode principale
-    
     public function dossiers() {
-        $page_title = 'Dossiers de Formation';
-        $database = new Database();
-        $statuses = $this->generateStatusMenu($database);  // Récupérer les statuts ici
-        $formations = $this->generateFormationMenu($database);  // Récupérer les formations ici
-    
-        // Filtrer les dossiers par formation si une formation est sélectionnée
-        $formationFilter = '';
-        $selectedFormationId = null;
-        $selectedFormation = null;
-        if (isset($_POST['formation_id']) && !empty($_POST['formation_id'])) {
-            $formationFilter = "WHERE fd.id_formation_catalogue = :formation_id";
-            $selectedFormationId = $_POST['formation_id'];
-            $selectedFormation = $this->getFormationById($database, $selectedFormationId);
-        }
-    
-        $sql = "SELECT fd.id_formation_dossiers, fd.date_devis, fd.date_debut_formation, fd.date_fin_formation, fd.date_pec, fd.pec_numero, 
-        fd.date_convocation, fd.date_evaluation, fd.date_envoi_evaluation, fd.date_evaluation,
-        CONCAT(fc.numero, ' - ', fc.titre) AS formation, ms.text AS statut,
-        uc.prenom, uc.nom, u.login, annee_comptabilisation
-        FROM formation_dossiers fd
-        LEFT JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
-        LEFT JOIN menustatutformation ms ON fd.id_menustatutformation = ms.id
-        LEFT JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
-        LEFT JOIN user u ON uc.id_guid = u.id_guid
-        $formationFilter";  // Ajouter le filtre de formation
-        
-        $query = $database->query($sql);
-        if (!empty($formationFilter)) {
-            $query->execute(['formation_id' => $selectedFormationId]);
-        } else {
-            $query->execute();
-        }
-        $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    
-        include 'views.php';
-        render('dossiers', [
-            'data' => $data, 
-            'statuses' => $statuses, 
-            'formations' => $formations, 
-            'selectedFormationId' => $selectedFormationId, 
-            'selectedFormation' => $selectedFormation, 
-            'page_title' => $page_title
-        ]);
+    $page_title = 'Dossiers de Formation';
+    $database = new Database();
+    $statuses = $this->generateStatusMenu($database);  // Récupérer les statuts ici
+    $formations = $this->generateFormationMenu($database);  // Récupérer les formations ici
+
+    // Filtrer les dossiers par formation et année si une formation et une année sont sélectionnées
+    $formationFilter = '';
+    $selectedFormationId = null;
+    $selectedFormation = null;
+    $selectedYear = null;
+    if (isset($_GET['formation_id']) && !empty($_GET['formation_id'])) {
+        $formationFilter = "WHERE fd.id_formation_catalogue = :formation_id";
+        $selectedFormationId = $_GET['formation_id'];
+        $selectedFormation = $this->getFormationById($database, $selectedFormationId);
     }
+    if (isset($_GET['annee']) && !empty($_GET['annee'])) {
+        $formationFilter .= $formationFilter ? " AND " : "WHERE ";
+        $formationFilter .= "fd.annee_comptabilisation = :annee";
+        $selectedYear = $_GET['annee'];
+    }
+
+    $sql = "SELECT fd.id_formation_dossiers, fd.date_devis, fd.date_debut_formation, fd.date_fin_formation, fd.date_pec, fd.pec_numero, 
+    fd.date_convocation, fd.date_evaluation, fd.date_envoi_evaluation, fd.date_evaluation,
+    CONCAT(fc.numero, ' - ', fc.titre) AS formation, ms.text AS statut,
+    uc.prenom, uc.nom, u.login, annee_comptabilisation
+    FROM formation_dossiers fd
+    LEFT JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
+    LEFT JOIN menustatutformation ms ON fd.id_menustatutformation = ms.id
+    LEFT JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+    LEFT JOIN user u ON uc.id_guid = u.id_guid
+    $formationFilter";  // Ajouter le filtre de formation et année
+    
+    $query = $database->query($sql);
+    $params = [];
+    if (!empty($selectedFormationId)) {
+        $params['formation_id'] = $selectedFormationId;
+    }
+    if (!empty($selectedYear)) {
+        $params['annee'] = $selectedYear;
+    }
+    $query->execute($params);
+    $data = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    include 'views.php';
+    render('dossiers', [
+        'data' => $data, 
+        'statuses' => $statuses, 
+        'formations' => $formations, 
+        'selectedFormationId' => $selectedFormationId, 
+        'selectedFormation' => $selectedFormation, 
+        'selectedYear' => $selectedYear, 
+        'page_title' => $page_title
+    ]);
+    }
+
     // Méthode pour récupérer les informations de la formation par ID
     private function getFormationById($database, $formationId) {
-        $sql = "SELECT CONCAT(numero, ' - ', titre) AS formation FROM formation_catalogue WHERE id_formation_catalogue = :formation_id";
-        $query = $database->query($sql);
-        $query->execute(['formation_id' => $formationId]);
-        return $query->fetchColumn();
+    $sql = "SELECT CONCAT(numero, ' - ', titre) AS formation FROM formation_catalogue WHERE id_formation_catalogue = :formation_id";
+    $query = $database->query($sql);
+    $query->execute(['formation_id' => $formationId]);
+    return $query->fetchColumn();
     }
 
 
@@ -109,12 +149,14 @@ class EntityController extends BaseController {
     $page_title = 'Détails du dossier de formation';
     $database = new Database();
     $sql = "SELECT fd.*, fc.titre, ms.text AS statut, 
-                   uc.prenom, uc.nom,
+                   uc.prenom, uc.nom, u.login,  -- Ajout du champ login ici
+                   adresse_url_support, -- Ajout du champ adresse_url_support ici
                    fqa.attentes_formation, fqa.competence1, fqa.competence2, fqa.competence3, fqa.competence4, fqa.competence5, fqa.competence6
             FROM formation_dossiers fd 
             JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue 
             JOIN menustatutformation ms ON fd.id_menustatutformation = ms.id 
             JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+            JOIN user u ON uc.id_guid = u.id_guid  -- Jointure pour récupérer le champ login
             LEFT JOIN formation_questionnaire_avant fqa ON fd.id_formation_dossiers = fqa.id_formation_dossiers
             WHERE fd.id_formation_dossiers = :id";
     $query = $database->query($sql);
@@ -122,13 +164,62 @@ class EntityController extends BaseController {
     $dossier = $query->fetch(PDO::FETCH_ASSOC);
 
     if ($dossier) {
+        // Récupérer les liens vers les fichiers Devis.pdf, PEC.pdf et Attestation.pdf
+        $fileUrls = $this->getDriveFileUrls($id);
         include 'views.php';
-        render('view_dossier', ['dossier' => $dossier], $page_title);
+        render('view_dossier', ['dossier' => $dossier, 'fileUrls' => $fileUrls], $page_title);
     } else {
         header('Location: index.php?page=dossiers'); // Redirect if no dossier found
         exit;
     }
     }
+// getDriveFileUrls() pour récupérer les liens des fichiers Devis.pdf, PEC.pdf et Attestation.pdf
+    private function getDriveFileUrls($dossierId) {
+    $baseDirectoryPath = "d:/extranet/drive/";
+    $baseUrlPath = "http://extranet/drive/";
+
+    if (!is_dir($baseDirectoryPath)) {
+        return null;
+    }
+
+    $matchingDirectories = [];
+    $directories = scandir($baseDirectoryPath);
+
+    foreach ($directories as $directory) {
+        if (is_dir($baseDirectoryPath . $directory) && preg_match("/^0*$dossierId-/", $directory)) {
+            $matchingDirectories[] = $directory;
+        }
+    }
+
+    $fileUrls = [
+        'devis' => null,
+        'pec' => null,
+        'attestation' => null
+    ];
+
+    if (!empty($matchingDirectories)) {
+        $directoryPath = $baseDirectoryPath . $matchingDirectories[0];
+        $urlPath = $baseUrlPath . $matchingDirectories[0];
+
+        $files = [
+            'devis' => "$directoryPath/Devis.pdf",
+            'pec' => "$directoryPath/PEC.pdf",
+            'attestation' => "$directoryPath/Attestation.pdf",
+            'support' => "$directoryPath/Support.pdf"
+        ];
+
+        foreach ($files as $key => $filePath) {
+            if (file_exists($filePath)) {
+                $fileUrls[$key] = $urlPath . '/' . basename($filePath);
+            }
+        }
+    }
+
+    return $fileUrls;
+    }
+
+
+
 
 
 

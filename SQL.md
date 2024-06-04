@@ -40,6 +40,7 @@
 - `p70_certificat_fin`: Indicates if the certificate of completion of training has been sent ('Y' or 'N')
 - `f10_dossier_termine`: Indicates if the training file is finished ('Y' or 'N')
 - `annee_comptabilisation `: Indicates accounting year (YEAR)
+- `adresse_url_support`: URL for Online traing support
 
 
 ## formation_questionnaire_avant

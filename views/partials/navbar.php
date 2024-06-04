@@ -1,6 +1,6 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="/index.php"><b>Association AMT</b></a>
+    <a class="navbar-brand ps-3" href="/index.php"><b>Extranet AMT</b></a>
     <!-- Sidebar Toggle-->
     <button class="btn order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
@@ -22,10 +22,10 @@
                 <a class="nav-link btn btn-success" href="/index.php?page=showLogin">Nouveau dossier</a>
             </li>
             <li class="nav-item me-2">
-                <a class="nav-link btn btn-primary" href="/index.php?page=dossiers">Gestion dossiers</a>
+                <a class="nav-link btn btn-secondary" href="/index.php?page=dossiers">Gestion dossiers</a>
             </li>
             <li class="nav-item me-2">
-                <a class="nav-link btn btn-secondary" href="//index.php?page=formationQuestionnaire">Qualité</a>
+                <a class="nav-link btn btn-primary" href="https://amteletravail.fr/" target=blank>AMT</a>
             </li>
 
         </ul>

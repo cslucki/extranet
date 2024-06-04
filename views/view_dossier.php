@@ -2,12 +2,39 @@
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
         <?php echo $page_title; ?><br>
-        <a href=/index.php?page=view_comments&id_guid=<?php echo $dossier['id_guid']; ?>>Communications</a> - 
-        <a href=/index.php?page=formationQuestionnaire&action=view_detail&id=<?php echo $dossier['id_formation_dossiers']; ?>>Entretien préalable</a> - 
-        <a href=/index.php?page=viewLocalDrive&id=<?php echo $dossier['id_formation_dossiers']; ?>>Documents</a> - 
+        <b>Com</b> : <a href=http://cyberworkers.com/cybber/partners/finder.php?action=finder&requete=<?php echo $dossier['login']; ?>&type=1&df=1>Saisie</a> - 
+        <a href=/index.php?page=view_comments&id_guid=<?php echo $dossier['id_guid']; ?>>Voir</a>
+
+        | <b>Documents</b> : 
+ 
+     
+     
+    <?php 
+    if ($fileUrls['devis']) {
+        echo '<a href="' . htmlspecialchars($fileUrls['devis']) . '" target="_blank">Convention</a>';
+    } else {
+        echo 'Aucun fichier Devis.pdf trouvé.';
+    }
+    ?>
+    -
     
-   
-    
+    <?php 
+    if ($fileUrls['pec']) {
+        echo '<a href="' . htmlspecialchars($fileUrls['pec']) . '" target="_blank">PEC</a>';
+    } else {
+        echo 'Aucun fichier PEC.pdf trouvé.';
+    }
+    ?>
+    -
+     
+    <?php 
+    if ($fileUrls['attestation']) {
+        echo '<a href="' . htmlspecialchars($fileUrls['attestation']) . '" target="_blank">Attestation</a>';
+    } else {
+        echo 'Aucun fichier Attestation.pdf trouvé.';
+    }
+    ?>
+       -  <a href=/index.php?page=viewLocalDrive&id=<?php echo $dossier['id_formation_dossiers']; ?>>Voir dossier</a>
     </div>
     <div class="card-body">
         <div class="row">
@@ -15,21 +42,24 @@
             <div class="col-md-6">
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h4>Nom de la formation : <?php echo htmlspecialchars($dossier['titre']); ?></h4>
-                        <h5>Nom du stagiaire : <?php echo htmlspecialchars($dossier['prenom'] . ' ' . $dossier['nom']); ?></h5>
+                        <h5>Formation : <?php echo htmlspecialchars($dossier['titre']); ?></h5>
+                        <h4>Bénéficiaire : <?php echo htmlspecialchars($dossier['prenom'] . ' ' . $dossier['nom']); ?></h4>
                     </div>
                     <div class="card-body">
                         <p><strong>Statut :</strong> <?php echo htmlspecialchars($dossier['statut']); ?></p>
                         <p><strong>Dossier terminé :</strong> 
                             <?php echo $dossier['f10_dossier_termine'] == 'Y' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'; ?>
                         </p>
-          
                         <p><strong>Dates formation :</strong> <?php echo htmlspecialchars($dossier['date_debut_formation'] . ' - ' . $dossier['date_fin_formation']); ?></p>
                         <p>
                             <strong>Convocation :</strong> <?php echo htmlspecialchars($dossier['date_convocation']); ?> - 
-                            <a href=/index.php?page=view_convocation&id=<?php echo $dossier['id_formation_dossiers']; ?>>voir la convocation</a>
+                             <a href="/index.php?page=view_convocation&id=<?php echo $dossier['id_formation_dossiers']; ?>">Voir la convocation</a>
                         </p>
-                        <p><strong>Séances faites :</strong> <?php echo htmlspecialchars($dossier['nbre_seances_faites']); ?></p>
+                        <p><strong>Seances faites :</strong> <?php echo htmlspecialchars($dossier['nbre_seances_faites']); ?> - 
+                    
+                        <a href="<?php echo $dossier['adresse_url_support']; ?>" target="_blank">Voir le Drive de formation</a>
+                    
+                    </p>
                     </div>
                 </div>
                 <div class="card mb-4">
@@ -37,29 +67,76 @@
                         <h5>Check-list de la formation</h5>
                     </div>
                     <div class="card-body">
-                        <p><strong>Entretien préalable :</strong> 
-                            <?php echo $dossier['p10_brief_formation'] == 'Y' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'; ?>
-                        </p>
-                        <p><strong>Individualisation de la formation :</strong> 
-                            <?php echo $dossier['p20_individualisation'] == 'Y' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'; ?>
-                        </p>
-                        <p><strong>Entreprise créée :</strong> 
-                            <?php echo $dossier['p30_ae_cree'] == 'Y' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'; ?>
-                        </p>
-                        <p><strong>Attestation de CFP obtenue :</strong> 
-                            <?php echo $dossier['p40_attestation_cfp'] == 'Y' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'; ?>
-                        </p>
-                        <p><strong>Demande de financement effectuée :</strong> 
-                            <?php echo $dossier['p50_demande_pec'] == 'Y' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'; ?>
-                        </p>
-                        <p><strong>Financement obtenu :</strong> 
-                            <?php echo $dossier['p60_pec_ok'] == 'Y' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'; ?>
-                        </p>
-                        <p><strong>Certificat de fin de formation :</strong> 
-                            <?php echo $dossier['p70_certificat_fin'] == 'Y' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-times"></i>'; ?>
-                        </p>
+                    <p><strong>Entretien préalable :</strong> 
+                    <?php 
+                    if ($dossier['p10_brief_formation'] == 'Y') {
+                        echo '<i class="fas fa-check"></i>';
+                        echo ' - <a href="/index.php?page=formationQuestionnaire&action=view_detail&id=' . $dossier['id_formation_dossiers'] . '">Voir l\'entretien préalable</a>';
+                    } else {
+                        echo '<i class="fas fa-times"></i>';
+                    }
+                    ?>
+                </p>
 
+                <p><strong>Individualisation de la formation :</strong> 
+                    <?php 
+                    if ($dossier['p20_individualisation'] == 'Y') {
+                        echo '<i class="fas fa-check"></i>';
+                    } else {
+                        echo '<i class="fas fa-times"></i>';
+                    }
+                    ?>
+                </p>
 
+                <p><strong>Entreprise créée :</strong> 
+                    <?php 
+                    if ($dossier['p30_ae_cree'] == 'Y') {
+                        echo '<i class="fas fa-check"></i>';
+                    } else {
+                        echo '<i class="fas fa-times"></i>';
+                    }
+                    ?>
+                </p>
+
+                <p><strong>Attestation URSSAF :</strong> 
+                    <?php 
+                    if ($dossier['p40_attestation_cfp'] == 'Y') {
+                        echo '<i class="fas fa-check"></i>';
+                    } else {
+                        echo '<i class="fas fa-times"></i>';
+                    }
+                    ?>
+                </p>
+
+                <p><strong>Demande de financement  :</strong> 
+                    <?php 
+                    if ($dossier['p50_demande_pec'] == 'Y') {
+                        echo '<i class="fas fa-check"></i>';
+                    } else {
+                        echo '<i class="fas fa-times"></i>';
+                    }
+                    ?>
+                </p>
+
+                <p><strong>Financement accordé :</strong> 
+                    <?php 
+                    if ($dossier['p60_pec_ok'] == 'Y') {
+                        echo '<i class="fas fa-check"></i>';
+                    } else {
+                        echo '<i class="fas fa-times"></i>';
+                    }
+                    ?>
+                </p>
+
+                <p><strong>Certificat de fin de formation :</strong> 
+                    <?php 
+                    if ($dossier['p70_certificat_fin'] == 'Y') {
+                        echo '<i class="fas fa-check"></i>';
+                    } else {
+                        echo '<i class="fas fa-times"></i>';
+                    }
+                    ?>
+                </p>
                     </div>
                 </div>
             </div>
@@ -93,14 +170,47 @@
                     <div class="card-body">            
                         <p><strong>Chèque de caution :</strong> <?php echo htmlspecialchars($dossier['date_cheque_caution_recu'] ?: 'Non reçu'); ?></p>
                         <p><strong>Attestation de fin de formation pour financeur :</strong> <?php echo htmlspecialchars($dossier['date_envoi_attestation'] ?: 'Non envoyée'); ?></p>
-   
-                        
-                        
                         <p><strong>Moyen de paiement :</strong> <?php echo htmlspecialchars($dossier['moyen_paiement'] == 'CH' ? 'Par chèque' : 'Virement bancaire'); ?></p>
+                        <?php
+                        /*
                         <p><strong>Date fonds reçus par le stagiaire :</strong> <?php echo htmlspecialchars($dossier['date_fond_recu_par_stagiaire'] ?: 'Fonds non reçus'); ?></p>
                         <p><strong>Date solde du dossier :</strong> <?php echo htmlspecialchars($dossier['date_solde_dossier'] ?: 'Solde non effectué'); ?></p>
+                        */
+                        ?>
                     </div>
                 </div>
+                <?php
+                    /*
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Documents</h5>
+                    </div>
+                    <div class="card-body">
+                    
+                    if ($fileUrls['devis']) {
+                        echo '<p><strong>Devis :</strong> <a href="' . htmlspecialchars($fileUrls['devis']) . '" target="_blank">Voir le Devis.pdf</a></p>';
+                    } else {
+                        echo '<p><strong>Devis :</strong> Aucun fichier Devis.pdf trouvé.</p>';
+                    }
+                    
+                    if ($fileUrls['pec']) {
+                        echo '<p><strong>PEC :</strong> <a href="' . htmlspecialchars($fileUrls['pec']) . '" target="_blank">Voir le PEC.pdf</a></p>';
+                    } else {
+                        echo '<p><strong>PEC :</strong> Aucun fichier PEC.pdf trouvé.</p>';
+                    }
+                    
+                    if ($fileUrls['attestation']) {
+                        echo '<p><strong>Attestation :</strong> <a href="' . htmlspecialchars($fileUrls['attestation']) . '" target="_blank">Voir l\'Attestation.pdf</a></p>';
+                    } else {
+                        echo '<p><strong>Attestation :</strong> Aucun fichier Attestation.pdf trouvé.</p>';
+                    }
+                   
+               
+                    </div>
+                    
+                </div>
+                 */
+                ?>
             </div>
         </div>
         
