@@ -35,7 +35,7 @@
                         <option value="Dans 15 jours">Dans 15 jours</option>
                         <option value="Dans 1 mois">Dans 1 mois</option>
                     </select><br>
-                    <textarea name="attentes_formation" placeholder="Attentes de la formation"></textarea><br>
+                    <textarea name="attentes_formation" placeholder="Attentes de la formation" rows="10" cols="200"></textarea><br>
                     
                     <?php
                     $competences = ['competence1', 'competence2', 'competence3', 'competence4', 'competence5', 'competence6'];
@@ -79,7 +79,7 @@
                         <option value="Dans 15 jours" <?php if ($questionnaire['date_debut_souhaitee'] == 'Dans 15 jours') echo 'selected'; ?>>Dans 15 jours</option>
                         <option value="Dans 1 mois" <?php if ($questionnaire['date_debut_souhaitee'] == 'Dans 1 mois') echo 'selected'; ?>>Dans 1 mois</option>
                     </select><br>
-                    <textarea name="attentes_formation"><?= $questionnaire['attentes_formation'] ?></textarea><br>
+                    <textarea name="attentes_formation"  rows="10" cols="200">><?= $questionnaire['attentes_formation'] ?></textarea><br>
                     
                     <?php
                     $competences = ['competence1', 'competence2', 'competence3', 'competence4', 'competence5', 'competence6'];

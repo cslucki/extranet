@@ -39,6 +39,7 @@
 - `p60_pec_ok`: Indicates if the funding is okay ('Y' or 'N')
 - `p70_certificat_fin`: Indicates if the certificate of completion of training has been sent ('Y' or 'N')
 - `f10_dossier_termine`: Indicates if the training file is finished ('Y' or 'N')
+- `f20_abandon`: Indicates if the training file is finished ('Y' or 'N')
 - `annee_comptabilisation `: Indicates accounting year (YEAR)
 - `adresse_url_support`: URL for Online traing support
 - `eval1` to `eval3` : Training evaluation questions (1 to 3)

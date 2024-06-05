@@ -1,41 +1,63 @@
+
+
+
 <div class="card mb-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        <?php echo $page_title; ?><br>
+        <?php echo $page_title; ?>
+
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 text-start">
+                    <!-- Contenu pour la colonne de gauche -->
+                    
+        
         <b>Com</b> : <a href=http://cyberworkers.com/cybber/partners/finder.php?action=finder&requete=<?php echo $dossier['login']; ?>&type=1&df=1>Saisie</a> - 
         <a href=/index.php?page=view_comments&id_guid=<?php echo $dossier['id_guid']; ?>>Voir</a>
 
         | <b>Documents</b> : 
+                <?php 
+                if ($fileUrls['devis']) {
+                    echo '<a href="' . htmlspecialchars($fileUrls['devis']) . '" target="_blank">Convention</a> - ';
+                } else {
+                    //echo 'Aucun fichier Devis.pdf trouvé.';
+                }
+                ?>
+                <?php 
+                if ($fileUrls['pec']) {
+                    echo '<a href="' . htmlspecialchars($fileUrls['pec']) . '" target="_blank">PEC</a> - ';
+                } else {
+                    //echo 'Aucun fichier PEC.pdf trouvé.';
+                }
+                ?>
+                
+                <?php 
+                if ($fileUrls['attestation']) {
+                    echo '<a href="' . htmlspecialchars($fileUrls['attestation']) . '" target="_blank">Attestation</a> - ';
+                } else {
+                // echo 'Aucun fichier Attestation.pdf trouvé.';
+                }
+                ?>
+       <a href=/index.php?page=viewLocalDrive&id=<?php echo $dossier['id_formation_dossiers']; ?>>Voir dossier</a>
+   
+                    </div>
+                    <div class="col-6 text-end">
+                    <!-- Contenu pour la colonne de droite -->
+                    <?php if ($previousId): ?>
+        <a href="index.php?page=viewDossier&id=<?php echo $previousId; ?>">Précédent</a> -
+    <?php endif; ?>
+    <?php if ($nextId): ?>
+        <a href="index.php?page=viewDossier&id=<?php echo $nextId; ?>" >Suivant</a>
+    <?php endif; ?>
+                    </div>
+                </div>
+                </div>
+
+        
  
-     
-     
-    <?php 
-    if ($fileUrls['devis']) {
-        echo '<a href="' . htmlspecialchars($fileUrls['devis']) . '" target="_blank">Convention</a>';
-    } else {
-        echo 'Aucun fichier Devis.pdf trouvé.';
-    }
-    ?>
-    -
-    
-    <?php 
-    if ($fileUrls['pec']) {
-        echo '<a href="' . htmlspecialchars($fileUrls['pec']) . '" target="_blank">PEC</a>';
-    } else {
-        echo 'Aucun fichier PEC.pdf trouvé.';
-    }
-    ?>
-    -
-     
-    <?php 
-    if ($fileUrls['attestation']) {
-        echo '<a href="' . htmlspecialchars($fileUrls['attestation']) . '" target="_blank">Attestation</a>';
-    } else {
-        echo 'Aucun fichier Attestation.pdf trouvé.';
-    }
-    ?>
-       -  <a href=/index.php?page=viewLocalDrive&id=<?php echo $dossier['id_formation_dossiers']; ?>>Voir dossier</a>
-    </div>
+
+     </div>
     <div class="card-body">
         <div class="row">
             <!-- Colonne de gauche -->
@@ -43,10 +65,13 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5>Formation : <?php echo htmlspecialchars($dossier['titre']); ?></h5>
-                        <h4>Bénéficiaire : <?php echo htmlspecialchars($dossier['prenom'] . ' ' . $dossier['nom']); ?></h4>
+                        <h4>Bénéficiaire : <?php echo $dossier['prenom'] . ' ' . $dossier['nom']; ?></h4>
                     </div>
                     <div class="card-body">
-                        <p><strong>Statut :</strong> <?php echo htmlspecialchars($dossier['statut']); ?></p>
+                        <p>
+                        <strong>Dossier :</strong> <?php echo htmlspecialchars($dossier['id_formation_dossiers']); ?> - 
+                        <strong>Statut :</strong> <?php echo htmlspecialchars($dossier['statut']); ?>
+                        </p>
 
                         <p><strong>Nombre de séances faites :</strong> <?php echo htmlspecialchars($dossier['nbre_seances_faites']); ?> - <a href="<?php echo $dossier['adresse_url_support']; ?>" target="_blank">Voir le Drive de formation</a>
 

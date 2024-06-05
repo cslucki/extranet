@@ -160,35 +160,62 @@ class EntityController extends BaseController {
 
 // viewDossier() pour afficher les détails d'un dossier
     public function viewDossier($id) {
-    $page_title = 'Détails du dossier de formation';
-    $database = new Database();
-    $sql = "SELECT fd.*, fc.titre, ms.text AS statut, 
-                   uc.prenom, uc.nom, u.login,  -- Ajout du champ login ici
-                   adresse_url_support, -- Ajout du champ adresse_url_support ici
-                   fqa.attentes_formation, 
-                   fqa.competence1, fqa.competence2, fqa.competence3, fqa.competence4, fqa.competence5, 
-                   fqa.competence6,
-                   eval_note, eval1, eval2, eval3
-            FROM formation_dossiers fd 
-            JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue 
-            JOIN menustatutformation ms ON fd.id_menustatutformation = ms.id 
-            JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
-            JOIN user u ON uc.id_guid = u.id_guid  -- Jointure pour récupérer le champ login
-            LEFT JOIN formation_questionnaire_avant fqa ON fd.id_formation_dossiers = fqa.id_formation_dossiers
-            WHERE fd.id_formation_dossiers = :id";
-    $query = $database->query($sql);
-    $query->execute(['id' => $id]);
-    $dossier = $query->fetch(PDO::FETCH_ASSOC);
+        $page_title = 'Détails du dossier de formation';
+        $database = new Database();
+        $sql = "SELECT fd.*, fc.titre, ms.text AS statut, 
+                    uc.prenom, uc.nom, u.login, 
+                    adresse_url_support, 
+                    fqa.attentes_formation, 
+                    fqa.competence1, fqa.competence2, fqa.competence3, fqa.competence4, fqa.competence5, 
+                    fqa.competence6,
+                    eval_note, eval1, eval2, eval3
+                FROM formation_dossiers fd 
+                JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue 
+                JOIN menustatutformation ms ON fd.id_menustatutformation = ms.id 
+                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+                JOIN user u ON uc.id_guid = u.id_guid  
+                LEFT JOIN formation_questionnaire_avant fqa ON fd.id_formation_dossiers = fqa.id_formation_dossiers
+                WHERE fd.id_formation_dossiers = :id";
+        $query = $database->query($sql);
+        $query->execute(['id' => $id]);
+        $dossier = $query->fetch(PDO::FETCH_ASSOC);
 
-    if ($dossier) {
-        // Récupérer les liens vers les fichiers Devis.pdf, PEC.pdf et Attestation.pdf
-        $fileUrls = $this->getDriveFileUrls($id);
-        include 'views.php';
-        render('view_dossier', ['dossier' => $dossier, 'fileUrls' => $fileUrls], $page_title);
-    } else {
-        header('Location: index.php?page=dossiers'); // Redirect if no dossier found
-        exit;
+        if ($dossier) {
+            // Récupérer les IDs des dossiers précédents et suivants
+            $previousId = $this->getPreviousDossierId($database, $id);
+            $nextId = $this->getNextDossierId($database, $id);
+
+            // Récupérer les liens vers les fichiers Devis.pdf, PEC.pdf et Attestation.pdf
+            $fileUrls = $this->getDriveFileUrls($id);
+            include 'views.php';
+            render('view_dossier', [
+                'dossier' => $dossier, 
+                'fileUrls' => $fileUrls, 
+                'previousId' => $previousId, 
+                'nextId' => $nextId
+            ], $page_title);
+        } else {
+            header('Location: index.php?page=dossiers'); // Redirect if no dossier found
+            exit;
+        }
     }
+
+    private function getPreviousDossierId($database, $currentId) {
+        $sql = "SELECT id_formation_dossiers FROM formation_dossiers 
+                WHERE id_formation_dossiers < :currentId 
+                ORDER BY id_formation_dossiers DESC LIMIT 1";
+        $query = $database->query($sql);
+        $query->execute(['currentId' => $currentId]);
+        return $query->fetchColumn();
+    }
+
+    private function getNextDossierId($database, $currentId) {
+        $sql = "SELECT id_formation_dossiers FROM formation_dossiers 
+                WHERE id_formation_dossiers > :currentId 
+                ORDER BY id_formation_dossiers ASC LIMIT 1";
+        $query = $database->query($sql);
+        $query->execute(['currentId' => $currentId]);
+        return $query->fetchColumn();
     }
 // getDriveFileUrls() pour récupérer les liens des fichiers Devis.pdf, PEC.pdf et Attestation.pdf
     private function getDriveFileUrls($dossierId) {
@@ -278,6 +305,7 @@ class EntityController extends BaseController {
                 'id_menustatutformation' => $_POST['id_menustatutformation'], 
                 'date_debut_formation' => $_POST['date_debut_formation'],
                 'date_fin_formation' => $_POST['date_fin_formation'],
+                'f20_abandon' => $_POST['f20_abandon'] // Nouveau champ ajouté
             ];
 
             // Mise à jour de la base de données
@@ -286,7 +314,8 @@ class EntityController extends BaseController {
                     id_formation_catalogue = :id_formation_catalogue,
                     id_menustatutformation = :id_menustatutformation, 
                     date_debut_formation = :date_debut_formation,
-                    date_fin_formation = :date_fin_formation
+                    date_fin_formation = :date_fin_formation,
+                    f20_abandon = :f20_abandon
                     WHERE id_formation_dossiers = :id";
             $query = $database->query($sql);
             $query->execute($data);

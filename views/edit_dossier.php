@@ -44,6 +44,20 @@
                 <label for="date_fin_formation">Date de fin:</label>
                 <input type="date" class="form-control" name="date_fin_formation" value="<?php echo $dossier['date_fin_formation']; ?>" required>
             </div>
+
+            <label for="f20_abandon">Abandon de la formation:</label>
+                <div>
+                    <label>
+                        <input type="radio" name="f20_abandon" value="Y" <?php echo ($dossier['f20_abandon'] == 'Y') ? 'checked' : ''; ?>>
+                        Oui
+                    </label>
+                    <label>
+                        <input type="radio" name="f20_abandon" value="N" <?php echo ($dossier['f20_abandon'] == 'N') ? 'checked' : ''; ?>>
+                        Non
+                    </label>
+                </div>
+
+
             <button type="submit" class="btn btn-primary">Mettre à jour</button>
         </form>
     </div>
