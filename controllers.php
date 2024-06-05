@@ -1060,6 +1060,7 @@ class EntityController extends BaseController {
 
 
 // Contrôleur pour la gestion des abandons
+    // Contrôleur pour la gestion des abandons
     class ManageAbandon extends BaseController {
         public function handleRequest() {
             $action = isset($_GET['action']) ? $_GET['action'] : 'index';
