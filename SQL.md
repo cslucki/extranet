@@ -40,6 +40,10 @@
 - `p70_certificat_fin`: Indicates if the certificate of completion of training has been sent ('Y' or 'N')
 - `f10_dossier_termine`: Indicates if the training file is finished ('Y' or 'N')
 - `f20_abandon`: Indicates if the training file is finished ('Y' or 'N')
+- `f20_abandon_raison`: problems encountered by the training trainee (TEXT)
+- `f20_abandon_raison_date `: Date of problems encountered by the training trainee
+- `f20_abandon_solution`: solutions offered by the training organization to the training trainee (TEXT)
+- `f20_abandon_solution_date`: Date of the solutions offered by the training organization 
 - `annee_comptabilisation `: Indicates accounting year (YEAR)
 - `adresse_url_support`: URL for Online traing support
 - `eval1` to `eval3` : Training evaluation questions (1 to 3)

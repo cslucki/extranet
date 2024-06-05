@@ -71,6 +71,7 @@
                         <p>
                         <strong>Dossier :</strong> <?php echo htmlspecialchars($dossier['id_formation_dossiers']); ?> - 
                         <strong>Statut :</strong> <?php echo htmlspecialchars($dossier['statut']); ?>
+                        <?php if ($dossier['f20_abandon'] == 'Y') echo '<p style="color: red;">Dossier problématique</p>'; ?>
                         </p>
 
                         <p><strong>Nombre de séances faites :</strong> <?php echo htmlspecialchars($dossier['nbre_seances_faites']); ?> - <a href="<?php echo $dossier['adresse_url_support']; ?>" target="_blank">Voir le Drive de formation</a>

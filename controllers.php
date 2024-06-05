@@ -26,7 +26,9 @@ class HomeController extends BaseController {
         
         // Récupérer la moyenne des notes des formations
         $averageEvalNote = $this->getAverageEvalNote($database);
-        
+
+        // Récupérer les dossiers en abandon
+        $abandonedDossiers = $this->getAbandonedDossiers($database);        
         
         include 'views.php';
         render('home', [
@@ -34,9 +36,24 @@ class HomeController extends BaseController {
             'dossiersByYear' => $dossiersByYear,
             'formationsSubtotal' => $formationsSubtotal,
             'dossiersByYearAndType' => $dossiersByYearAndType,
-            'averageEvalNote' => $averageEvalNote
+            'averageEvalNote' => $averageEvalNote,
+            'abandonedDossiers' => $abandonedDossiers
         ], $page_title);
     }
+
+// getAbandonedDossiers() pour récupérer les dossiers abandonnés
+    private function getAbandonedDossiers($database) {
+        $sql = "SELECT fd.id_formation_dossiers, uc.prenom, uc.nom, fc.titre, fd.date_debut_formation, fd.date_fin_formation
+                FROM formation_dossiers fd
+                JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+                JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
+                WHERE fd.f20_abandon = 'Y'";
+        $query = $database->query($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
 // getTotalDossiers() pour récupérer le nombre total de dossiers
     private function getTotalDossiers($database) {
         $sql = "SELECT COUNT(*) AS total FROM formation_dossiers";

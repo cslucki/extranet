@@ -43,17 +43,29 @@
                             </li>
                         <?php endforeach; ?>
                     </ul>
-    <h5>Sous-totaux par année :</h5>
-                    <ul>
-                        <?php foreach ($dossiersByYear as $yearData) : ?>
-                            <li>
-                                <a href="index.php?page=dossiers&annee=<?php echo $yearData['annee_comptabilisation']; ?>">
-                                    <?php echo $yearData['annee_comptabilisation']; ?> : <?php echo $yearData['total']; ?> dossiers
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                </div>
+            </div>
 
+            <div class="card mt-4">
+                <div class="card-header">
+                    Dossiers problématiques
+                </div>
+                <div class="card-body">
+                    <?php if (!empty($abandonedDossiers)) : ?>
+                        <ul>
+                            <?php foreach ($abandonedDossiers as $dossier) : ?>
+                                <li>
+                                    <a href="http://extranet/index.php?page=viewDossier&id=<?php echo $dossier['id_formation_dossiers']; ?>">
+                                        <?php echo htmlspecialchars($dossier['prenom'] . ' ' . $dossier['nom']); ?> - 
+                                        <?php echo htmlspecialchars($dossier['titre']); ?></a> - 
+                                        Formation du <?php echo htmlspecialchars($dossier['date_debut_formation']); ?> au <?php echo htmlspecialchars($dossier['date_fin_formation']); ?>
+                                    
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else : ?>
+                        <p>Aucun dossier en abandon trouvé.</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </p>
