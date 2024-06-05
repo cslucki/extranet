@@ -62,7 +62,7 @@ switch ($page) {
             $controller = new EntityController();
             $controller->processActions();
             break;
-
+    /* Début CRUD */
         // menuStatutFormation
         case 'menuStatutFormation':
             $controller = new MenuStatutFormationController();
@@ -73,6 +73,14 @@ switch ($page) {
             $controller = new FormationCatalogueController();
             $controller->handleRequest(); 
             break;
+        // manageAbondon
+        case 'manageAbondon':
+            $controller = new ManageAbandon ();
+            $controller->handleRequest(); 
+            break;
+
+
+        /* Fin CRUD */
         
         // viewLocalDrive
         case 'viewLocalDrive': // pour ouvrir un dossier local
@@ -105,7 +113,7 @@ switch ($page) {
           //  $controller->viewComments($id);
             break;
         /* Fin commentaires avant formation */
-        /* Début Utilisation de Layout */
+    /* Début Utilisation de Layouts */
         // viewConvocation
         case 'view_convocation': // pour afficher la convocation
             $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -118,18 +126,21 @@ switch ($page) {
             $controller = new LayoutController();
             $controller->viewCertificat($id);
             break;
+        // viewEvaluation
         case 'view_evaluation':
             $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
             $controller = new LayoutController();
             $controller->viewEvaluation($id);
             break;
+        // viewPreEvaluation
         case 'view_pre_evaluation':
             $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
             $controller = new LayoutController();
             $controller->viewPreEvaluation($id);
             break;
+    /* FIN Utilisation de Layouts */
 
-            /* FIN Utilisation de Layout */
+            
 
     /****  Gestion de la page par défaut ou erreur 404  ****/
     default:

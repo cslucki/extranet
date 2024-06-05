@@ -1052,6 +1052,154 @@ class EntityController extends BaseController {
     }
 
 
+/* CRUD pour */
+
+// Contrôleur pour la gestion des abandons
+   
+
+
+
+// Contrôleur pour la gestion des abandons
+    class ManageAbandon extends BaseController {
+        public function handleRequest() {
+            $action = isset($_GET['action']) ? $_GET['action'] : 'index';
+            $id = isset($_GET['id']) ? $_GET['id'] : null;
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if ($action === 'store') {
+                    $this->storeAbandon();
+                } elseif ($action === 'update' && $id) {
+                    $this->updateAbandon($id);
+                }
+            }
+
+            $this->renderView($action, $id);
+        }
+
+        private function renderView($action, $id = null) {
+            switch ($action) {
+                case 'add':
+                    $this->addAbandon();
+                    break;
+                case 'edit':
+                    $this->editAbandon($id);
+                    break;
+                case 'view':
+                    $this->viewAbandon($id);
+                    break;
+                case 'delete':
+                    $this->deleteAbandon($id);
+                    break;
+                default:
+                    $this->index();
+                    break;
+            }
+        }
+
+        public function index() {
+            $database = new Database();
+            $sql = "SELECT fd.id_formation_dossiers, uc.prenom, uc.nom, fc.numero, fc.titre, fd.date_debut_formation, fd.date_fin_formation, fd.f20_abandon_raison, fd.f20_abandon_solution
+                    FROM formation_dossiers fd
+                    JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+                    JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
+                    WHERE fd.f20_abandon IS NOT NULL";
+            $query = $database->query($sql);
+            $query->execute();
+            $abandonItems = $query->fetchAll(PDO::FETCH_ASSOC);
+            include 'views.php';
+            render('manageAbandon', ['abandonItems' => $abandonItems], 'Gérer Problèmes de Formation');
+        }
+
+        public function addAbandon() {
+            include 'views.php';
+            render('addAbandon', [], 'Ajouter un Abandon');
+        }
+
+        public function editAbandon($id) {
+            $database = new Database();
+            $sql = "SELECT * FROM formation_dossiers WHERE id_formation_dossiers = :id";
+            $query = $database->query($sql);
+            $query->execute(['id' => $id]);
+            $abandon = $query->fetch(PDO::FETCH_ASSOC);
+            include 'views.php';
+            render('editAbandon', ['abandon' => $abandon], 'Modifier un Abandon');
+        }
+
+        public function viewAbandon($id) {
+            $database = new Database();
+            $sql = "SELECT fd.id_formation_dossiers, uc.prenom, uc.nom, fc.numero, fc.titre, fd.date_debut_formation, fd.date_fin_formation, fd.f20_abandon_raison, fd.f20_abandon_solution
+                    FROM formation_dossiers fd
+                    JOIN user_coordonnee uc ON fd.id_guid = uc.id_guid
+                    JOIN formation_catalogue fc ON fd.id_formation_catalogue = fc.id_formation_catalogue
+                    WHERE fd.id_formation_dossiers = :id";
+            $query = $database->query($sql);
+            $query->execute(['id' => $id]);
+            $abandon = $query->fetch(PDO::FETCH_ASSOC);
+            include 'views.php';
+            render('viewAbandon', ['abandon' => $abandon], 'Détails de l\'Abandon');
+        }
+
+        public function storeAbandon() {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $data = [
+                    'id_formation_dossiers' => $_POST['id_formation_dossiers'],
+                    'f20_abandon' => $_POST['f20_abandon'],
+                    'f20_abandon_raison' => $_POST['f20_abandon_raison'],
+                    'f20_abandon_raison_date' => $_POST['f20_abandon_raison_date'],
+                    'f20_abandon_solution' => $_POST['f20_abandon_solution'],
+                    'f20_abandon_solution_date' => $_POST['f20_abandon_solution_date']
+                ];
+
+                $database = new Database();
+                $sql = "INSERT INTO formation_dossiers (id_formation_dossiers, f20_abandon, f20_abandon_raison, f20_abandon_raison_date, f20_abandon_solution, f20_abandon_solution_date)
+                        VALUES (:id_formation_dossiers, :f20_abandon, :f20_abandon_raison, :f20_abandon_raison_date, :f20_abandon_solution, :f20_abandon_solution_date)";
+                $query = $database->query($sql);
+                $query->execute($data);
+
+                header('Location: index.php?page=manageAbandon');
+                exit;
+            }
+        }
+
+        public function updateAbandon($id) {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $data = [
+                    'id' => $id,
+                    'f20_abandon' => $_POST['f20_abandon'],
+                    'f20_abandon_raison' => $_POST['f20_abandon_raison'],
+                    'f20_abandon_raison_date' => $_POST['f20_abandon_raison_date'],
+                    'f20_abandon_solution' => $_POST['f20_abandon_solution'],
+                    'f20_abandon_solution_date' => $_POST['f20_abandon_solution_date']
+                ];
+
+                $database = new Database();
+                $sql = "UPDATE formation_dossiers SET
+                        f20_abandon = :f20_abandon,
+                        f20_abandon_raison = :f20_abandon_raison,
+                        f20_abandon_raison_date = :f20_abandon_raison_date,
+                        f20_abandon_solution = :f20_abandon_solution,
+                        f20_abandon_solution_date = :f20_abandon_solution_date
+                        WHERE id_formation_dossiers = :id";
+                $query = $database->query($sql);
+                $query->execute($data);
+
+                header('Location: index.php?page=manageAbandon');
+                exit;
+            }
+        }
+
+        public function deleteAbandon($id) {
+            $database = new Database();
+            $sql = "DELETE FROM formation_dossiers WHERE id_formation_dossiers = :id";
+            $query = $database->query($sql);
+            $query->execute(['id' => $id]);
+
+            header('Location: index.php?page=manageAbandon');
+            exit;
+        }
+    }
+
+
 /** Vue lm_gestion_lm_comments */
     class CommentController extends BaseController {
     
