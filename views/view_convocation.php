@@ -9,13 +9,21 @@
         <p><strong>Objet :</strong> Convocation début de formation</p>
 
         <p>Bonjour <?php echo htmlspecialchars($convocation['prenom'] . ' ' . strtoupper($convocation['nom'])); ?>,</p>
-        <p>Vous êtes inscrit à la formation "<strong><?php echo htmlspecialchars($convocation['numero']); ?> - <?php echo htmlspecialchars($convocation['titre']); ?></strong>".</p>
-        <p>La formation aura lieu du <strong><?php echo htmlspecialchars($convocation['date_debut_formation']); ?></strong> au <strong><?php echo htmlspecialchars($convocation['date_fin_formation']); ?></strong>.</p>
-        <p>Comme convenu lors de la séance de préparation, je vous contacterai par téléphone, 15 minutes avant l'heure prévue, pour vous guider.</p>
-        <p>Sinon depuis <a href=https://calendar.google.com/>Google Agenda</a>, connectez-vous à la visioconférence ou appelez moi au <a href=+33637931282>06 37 93 12 82</a>.</p>
-        <p>Voici le <a href=https://calendar.app.google/VqBUBa6iZv8Ztjh37>lien pour faire un report de séance<a/>.</p>
+        <p>Je vous souhaite la bienvenue à cette formation que vous débutez ce jour à 9 heures.</p>
+        <p>
+            Nom de la formation : "<strong><?php echo htmlspecialchars($convocation['numero']); ?> - <?php echo htmlspecialchars($convocation['titre']); ?></strong>"
+            (du <?php echo htmlspecialchars($convocation['date_debut_formation']); ?></strong> au <?php echo htmlspecialchars($convocation['date_fin_formation']); ?>).</p>
+        <p>Pour accèder à cette formation : 
+            <ul>
+                <li>Se connecter via <a href=https://calendar.google.com/>Google Agenda</a> (depuis un ordinateur ou un smartphone)</li>
+                <li>Et/ou consultez l'email envoyé par Google Agenda</li>
+                <li>Cliquez sur "Participer avec Google Meet"</li>
+            </ul>
+        <p>Comme convenu lors de la séance de préparation, je vous contacterai par téléphone, 15 minutes avant l'heure prévue.</p>
+        <p>Pour faire un <a href=https://calendar.app.google/VqBUBa6iZv8Ztjh37>report de séance<a/>.</p>
         <p>Cordialement,</p>
         <p>Cyril SLUCKI</p>
+        <p>06 37 93 12 82</p>
     </div>
 </div>
 

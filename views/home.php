@@ -9,7 +9,8 @@
                 </div>
                 <div class="card-body">
                     <p><strong>Nombre total de dossiers de formation :</strong> <?php echo $totalDossiers; ?></p>
-                    <p><strong>Moyenne des notes de formation :</strong> <?php echo number_format($averageEvalNote, 2); ?></p>
+                    <p><strong>Taux de satisfaction sur l'ensemble :</strong> <?php echo number_format($averageEvalNote, 2); ?></p>
+                    <p><strong>Taux de mise en pratique sur l'ensemble :</strong> <?php echo number_format($averageEvalSkills, 2); ?></p>
                     
                     <h5>Sous-totaux par type de formation toutes années confondues :</h5>
                     <ul>

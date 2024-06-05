@@ -20,6 +20,23 @@
             <div class="sb-nav-link-icon"><i class="fas fa-commenting"></i></div>
             Entretiens préalables
         </a>
+
+        <!-- Menu Abandon -->
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFormation_Catalogue" aria-expanded="false" aria-controls="collapseLayouts">
+            <div class="sb-nav-link-icon"><i class="fas fa-list-alt"></i></div>
+            Suivi abandons
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseFormation_Catalogue" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="/index.php?page=manageAbondon">Liste</a>
+                <a class="nav-link" href="/index.php?page=manageAbondon&action=add">Créer</a>
+            </nav>
+        </div>    
+
+
+
+
         <?php
         /*
         <a class="nav-link" href="/index.php?page=listComments">
@@ -59,6 +76,21 @@
 ?>
 <!-- Gestion -->
 <div class="sb-sidenav-menu-heading">Outils</div>
+
+        <!-- Menu Catalogue -->
+        <a class="nav-link collapsed" href="/index.php?page=menuStatutFormation" data-bs-toggle="collapse" data-bs-target="#collapseFormation_Catalogue" aria-expanded="false" aria-controls="collapseLayouts">
+            <div class="sb-nav-link-icon"><i class="fas fa-list-alt"></i></div>
+            Catalogue
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseFormation_Catalogue" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="/index.php?page=menuFormation_Catalogue">Liste</a>
+                <a class="nav-link" href="/index.php?page=menuFormation_Catalogue&action=add">Créer</a>
+            </nav>
+        </div>    
+
+
         <!-- Menu Statut de formation -->
         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
             <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
@@ -71,18 +103,7 @@
                 <a class="nav-link" href="/index.php?page=menuStatutFormation&action=add">Créer</a>
             </nav>
         </div>
-        <!-- Menu Catalogue -->
-        <a class="nav-link collapsed" href="/index.php?page=menuStatutFormation" data-bs-toggle="collapse" data-bs-target="#collapseFormation_Catalogue" aria-expanded="false" aria-controls="collapseLayouts">
-            <div class="sb-nav-link-icon"><i class="fas fa-list-alt"></i></div>
-            Catalogue
-            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-        </a>
-        <div class="collapse" id="collapseFormation_Catalogue" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-            <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="/index.php?page=menuFormation_Catalogue">Liste</a>
-                <a class="nav-link" href="/index.php?page=menuFormation_Catalogue&action=add">Créer</a>
-            </nav>
-        </div>     
+  
 
     </div>
 </div>

@@ -8,9 +8,13 @@
             <p class="card-title"><strong>Formation :</strong> <?= htmlspecialchars($dossier['numero']) ?> - <?= htmlspecialchars($dossier['titre']) ?></p>
             <p class="card-text"><strong>Date :</strong> <?= htmlspecialchars($dossier['date_fin_formation']) ?></p>
             <p class="card-text"><strong>Stagiaire :</strong> <?= htmlspecialchars($dossier['prenom']) ?> <?= htmlspecialchars($dossier['nom']) ?></p>
-            <h2 class="mt-4">Note sur 5 : <?= htmlspecialchars($dossier['eval_note']) ?></h2>
+            <h2 class="mt-4">Taux de satisfaction globale : <?= htmlspecialchars($dossier['eval_note']) ?>/5</h2>
+
             <h5 class="mt-4">Quelles sont les compétences que vous avez pu acquérir ?</h5>
             <p class="card-text"><?= nl2br(htmlspecialchars($dossier['eval1'])) ?></p>
+            <p class="card-text"><b>Taux de mise en pratique</b> : <?= htmlspecialchars($dossier['eval_skills']) ?>/5</p>
+
+
             <h5 class="mt-4">Points positifs de la formation</h5>
             <p class="card-text"><?= nl2br(htmlspecialchars($dossier['eval2'])) ?></p>
             <h5 class="mt-4">Points négatifs de la formation et/ou suggestions d’amélioration</h5>

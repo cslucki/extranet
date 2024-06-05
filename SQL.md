@@ -48,6 +48,7 @@
 - `adresse_url_support`: URL for Online traing support
 - `eval1` to `eval3` : Training evaluation questions (1 to 3)
 - `eval_note`: Score out of 5 regarding the training evaluation
+- `eval_skills`: Score out of 5 indicates the rate of application of skills acquired during training
 
 
 ## formation_questionnaire_avant

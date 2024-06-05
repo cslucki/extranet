@@ -69,9 +69,17 @@
                     </div>
                     <div class="card-body">
                         <p>
-                        <strong>Dossier :</strong> <?php echo htmlspecialchars($dossier['id_formation_dossiers']); ?> - 
+                        <strong>Dossier :</strong> <?php echo $dossier['id_formation_dossiers']; ?> - 
                         <strong>Statut :</strong> <?php echo htmlspecialchars($dossier['statut']); ?>
-                        <?php if ($dossier['f20_abandon'] == 'Y') echo '<p style="color: red;">Dossier problématique</p>'; ?>
+                        <!-- dossier proéblématique -->
+                        <?php if ($dossier['f20_abandon'] == 'Y') {
+                            echo '<br><span style="color: red;">
+                            Dossier problématique</span> - 
+                            <a href=index.php?page=manageAbondon&action=edit&id='.$dossier['id_formation_dossiers'].'>voir résumé</a>
+                            '; 
+                            }
+                        ?>
+
                         </p>
 
                         <p><strong>Nombre de séances faites :</strong> <?php echo htmlspecialchars($dossier['nbre_seances_faites']); ?> - <a href="<?php echo $dossier['adresse_url_support']; ?>" target="_blank">Voir le Drive de formation</a>
@@ -182,7 +190,8 @@
                         <p><strong>Evaluation sommative :</strong> <?php echo htmlspecialchars($dossier['date_fin_formation']); ?> - <a href="/index.php?page=view_pre_evaluation&id=<?php echo $dossier['id_formation_dossiers']; ?>">Voir l'évaluation</a></p>
                         <p><strong>Evaluation à froid :</strong> demandée le <?php echo htmlspecialchars($dossier['date_envoi_evaluation']); ?> - effectuée le <?php echo htmlspecialchars($dossier['date_evaluation']); ?></p>
                         <ul>
-                            <li>Note : <?php echo $dossier['eval_note']; ?>
+                            <li>Taux de satisfaction globale : <?php echo $dossier['eval_note']; ?>
+                            <li>Taux de mise en pratique : <?php echo $dossier['eval_skills']; ?>
                             <li><a href="/index.php?page=view_evaluation&id=<?php echo $dossier['id_formation_dossiers']; ?>">Voir l'évaluation à froid</a>
                         </ul>
                         <p><strong>Attentes avant la formation :</strong> <?php echo htmlspecialchars($dossier['attentes_formation']); ?></p>
