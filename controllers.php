@@ -31,7 +31,12 @@ class HomeController extends BaseController {
         $averageEvalSkills = $this->getAverageEvalSkills($database);
 
         // Récupérer les dossiers en abandon
-        $abandonedDossiers = $this->getAbandonedDossiers($database);        
+        $abandonedDossiers = $this->getAbandonedDossiers($database);
+        
+        // Taux par année
+        $averageEvalNoteByYear = $this->getAverageEvalNoteByYear($database);
+        $averageEvalSkillsByYear = $this->getAverageEvalSkillsByYear($database);
+
         
         include 'views.php';
         render('home', [
@@ -41,7 +46,9 @@ class HomeController extends BaseController {
             'dossiersByYearAndType' => $dossiersByYearAndType,
             'averageEvalNote' => $averageEvalNote,
             'averageEvalSkills' => $averageEvalSkills,
-            'abandonedDossiers' => $abandonedDossiers
+            'abandonedDossiers' => $abandonedDossiers,
+            'averageEvalNoteByYear' => $averageEvalNoteByYear,
+            'averageEvalSkillsByYear' => $averageEvalSkillsByYear
         ], $page_title);
     }
 
@@ -106,12 +113,35 @@ class HomeController extends BaseController {
     }
 
 // getAverageEvalSkills() pour récupérer la moyenne des notes de mise en pratique des compétences
-private function getAverageEvalSkills($database) {
+    private function getAverageEvalSkills($database) {
     $sql = "SELECT AVG(eval_skills) AS average FROM formation_dossiers WHERE eval_skills IS NOT NULL";
     $query = $database->query($sql);
     $query->execute();
     return $query->fetchColumn();
-}
+    }
+// getAverageEvalNoteByYear() pour récupérer la moyenne des notes des formations par année
+    private function getAverageEvalNoteByYear($database) {
+        $sql = "SELECT annee_comptabilisation, AVG(eval_note) AS average 
+                FROM formation_dossiers 
+                WHERE eval_note IS NOT NULL 
+                GROUP BY annee_comptabilisation 
+                ORDER BY annee_comptabilisation";
+        $query = $database->query($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+// getAverageEvalSkillsByYear() pour récupérer la moyenne des notes de mise en pratique des compétences par année
+    private function getAverageEvalSkillsByYear($database) {
+        $sql = "SELECT annee_comptabilisation, AVG(eval_skills) AS average 
+                FROM formation_dossiers 
+                WHERE eval_skills IS NOT NULL 
+                GROUP BY annee_comptabilisation 
+                ORDER BY annee_comptabilisation";
+        $query = $database->query($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
 }
 

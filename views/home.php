@@ -9,9 +9,43 @@
                 </div>
                 <div class="card-body">
                     <p><strong>Nombre total de dossiers de formation :</strong> <?php echo $totalDossiers; ?></p>
-                    <p><strong>Taux de satisfaction sur l'ensemble :</strong> <?php echo number_format($averageEvalNote, 2); ?></p>
-                    <p><strong>Taux de mise en pratique sur l'ensemble :</strong> <?php echo number_format($averageEvalSkills, 2); ?></p>
-                    
+                    <p>
+                        <strong>Taux de satisfaction sur l'ensemble :</strong> <?php echo number_format($averageEvalNote, 2); ?> - 
+                        <strong>Taux de mise en pratique sur l'ensemble :</strong> <?php echo number_format($averageEvalSkills, 2); ?>
+                    </p>
+
+
+                    <h5>Nombre de sessions par année :</h5>
+                    <ul>
+                        <?php foreach ($dossiersByYear as $yearData) : ?>
+                            <li>
+                                <a href="index.php?page=dossiers&annee=<?php echo $yearData['annee_comptabilisation']; ?>">
+                                    <?php echo $yearData['annee_comptabilisation']; ?> : <?php echo $yearData['total']; ?> dossiers
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+
+
+                    <h5>Taux satisfaction global année :</h5>
+                    <ul>
+                        <?php foreach ($averageEvalNoteByYear as $noteData) : ?>
+                            <li>
+                                <?php echo $noteData['annee_comptabilisation']; ?> : <?php echo number_format($noteData['average'], 2); ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+
+                    <h5>Taux satisfaction de mise en pratique par année :</h5>
+                    <ul>
+                        <?php foreach ($averageEvalSkillsByYear as $skillsData) : ?>
+                            <li>
+                                <?php echo $skillsData['annee_comptabilisation']; ?> : <?php echo number_format($skillsData['average'], 2); ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php 
+                    /*
                     <h5>Sous-totaux par type de formation toutes années confondues :</h5>
                     <ul>
                         <?php foreach ($formationsSubtotal as $formation) : ?>
@@ -33,17 +67,9 @@
                             </li>
                         <?php endforeach; ?>
                     </ul>
-                    
-                    <h5>Sous-totaux par année :</h5>
-                    <ul>
-                        <?php foreach ($dossiersByYear as $yearData) : ?>
-                            <li>
-                                <a href="index.php?page=dossiers&annee=<?php echo $yearData['annee_comptabilisation']; ?>">
-                                    <?php echo $yearData['annee_comptabilisation']; ?> : <?php echo $yearData['total']; ?> dossiers
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                    */
+                    ?>
+
                 </div>
             </div>
 
