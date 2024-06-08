@@ -1,0 +1,19 @@
+- id: 1
+  nom: Jean Dupont
+  age: 30
+  email: jean.dupont@example.com
+- id: 2
+  nom: Marie Martin
+  age: 25
+  email: marie.martin@example.com
+- id: 3
+  nom: Pierre Durand
+  age: 35
+  email: Eric Laqua, actuellement conseiller municipal de Lucé, est un candidat pour le parti Reconquête! aux élections européennes de 2024. Voici un aperçu de son parcours politique et de ses mandats : 1.	Conseiller municipal de Lucé : Eric Laqua occupe le poste de conseiller municipal dans la ville de Lucé, une position qui lui permet de s'engager activement dans la politique locale et de représenter les intérêts des habitants de cette commune. 2.	Candidature aux législatives de 2022 : Eric Laqua s'est présenté aux élections législatives de 2022 sous l'étiquette de Reconquête! dans la troisième circonscription d’Eure-et-Loir. Sa campagne était axée sur l'union des droites et des patriotes, mettant en avant des thèmes chers à son parti, comme l'opposition à l'immigration et la défense de l'identité nationale (Legacy.com). 3.	Engagement avec Reconquête! : En tant que membre de Reconquête!, le parti d'Éric Zemmour, Eric Laqua s'aligne sur les positions nationalistes et identitaires de ce mouvement. Reconquête! est connu pour ses actions médiatiques et ses campagnes virales sur les réseaux sociaux, visant à défendre des positions fermes contre l'immigration et l'islamisation, et à promouvoir une vision conservatrice de la société française (euronews) (La Croix). Eric Laqua est également président de l'association Notre Département - Notre Histoire, située en Eure-et-Loir. Cette association se consacre à la préservation et à la promotion du patrimoine historique et culturel du département.
+- id: 3
+  nom: Pierre Durand
+  age: 35
+  email: eric.laqua@example.com
+  description: "Eric Laqua, actuellement conseiller municipal de Lucé, est un candidat pour le parti Reconquête! aux élections européennes de 2024. Voici un aperçu de son parcours politique et de ses mandats : 1. Conseiller municipal de Lucé : Eric Laqua occupe le poste de conseiller municipal dans la ville de Lucé, une position qui lui permet de s'engager activement dans la politique locale et de représenter les intérêts des habitants de cette commune. 2. Candidature aux législatives de 2022 : Eric Laqua s'est présenté aux élections législatives de 2022 sous l'étiquette de Reconquête! dans la troisième circonscription d’Eure-et-Loir. Sa campagne était axée sur l'union des droites et des patriotes, mettant en avant des thèmes chers à son parti, comme l'opposition à l'immigration et la défense de l'identité nationale (Legacy.com). 3. Engagement avec Reconquête! : En tant que membre de Reconquête!, le parti d'Éric Zemmour, Eric Laqua s'aligne sur les positions nationalistes et identitaires de ce mouvement. Reconquête! est connu pour ses actions médiatiques et ses campagnes virales sur les réseaux sociaux, visant à défendre des positions fermes contre l'immigration et l'islamisation, et à promouvoir une vision conservatrice de la société française (euronews) (La Croix). Eric Laqua est également président de l'association Notre Département - Notre Histoire, située en Eure-et-Loir. Cette association se consacre à la préservation et à la promotion du patrimoine historique et culturel du département."
+
+# Ajoutez d'autres enregistrements ici...
