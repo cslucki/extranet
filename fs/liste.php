@@ -18,24 +18,25 @@ table, th, td {
 th, td {
     padding: 8px;
     text-align: left;
+    vertical-align: top; /* Alignement des colonnes sur le haut */
 }
 
 #pagination {
     margin-top: 10px;
 }
-
 #pagination a {
     padding: 5px 10px;
-    background-color: #f4f4f4;
-    border: 1px solid #ccc;
+    background-color: Blue; /* Couleur de fond bleu marine */
+    color: #fff; /* Couleur du texte blanche */
+    border: 1px solid Blue; /* Bordure de la même couleur que le fond */
     text-decoration: none;
     margin-right: 5px;
 }
 
 #pagination a:hover {
-    background-color: #ddd;
+    background-color: #001a35; /* Couleur de fond bleu marine foncée au survol */
+    color: #fff; /* Couleur du texte blanche */
 }
-
 /* Style pour cacher les détails par défaut */
 .details {
     display: none;
@@ -49,83 +50,80 @@ th, td {
 </head>
 <body>
 
-<?php
-// Inclure la classe Yaml de la bibliothèque Symfony YAML
-require 'vendor/autoload.php';
-use Symfony\Component\Yaml\Yaml;
+<table id="records-table">
+    <thead>
+        <tr>
+            <th>Numéro</th>
+            <th>Nom</th>
+            <th>X</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Les enregistrements seront chargés ici via AJAX -->
+    </tbody>
+</table>
 
-// Nom du fichier YAML
-$filename = 'data.yaml';
-
-// Fonction pour lire les enregistrements à partir du fichier YAML
-function readRecords($filename) {
-    return Yaml::parseFile($filename);
-}
-
-// Récupérer tous les enregistrements
-$allRecords = readRecords($filename);
-
-// Pagination
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
-$perPage = 20;
-$totalRecords = count($allRecords);
-$totalPages = ceil($totalRecords / $perPage);
-$start = ($page - 1) * $perPage;
-$end = $start + $perPage;
-$records = array_slice($allRecords, $start, $perPage);
-
-// Affichage des enregistrements
-echo '<table>';
-foreach ($records as $record) {
-    echo '<tr>';
-    foreach ($record as $key => $value) {
-        if ($key === 'id') {
-            // Lien pour afficher les détails
-            echo '<td><a href="#" class="details-link">' . $value . '</a></td>';
-        } else {
-            // Affichage normal des données sauf l'ID
-            echo '<td>' . $value . '</td>';
-        }
-    }
-    echo '</tr>';
-}
-echo '</table>';
-
-// Affichage de la pagination
-if ($totalPages > 1) {
-    echo '<div id="pagination">';
-    if ($page > 1) {
-        echo '<a href="?page='.($page - 1).'">Précédent</a>';
-    }
-    if ($page < $totalPages) {
-        echo '<a href="?page='.($page + 1).'">Suivant</a>';
-    }
-    echo '</div>';
-}
-?>
+<div id="pagination"></div>
 
 <!-- Conteneur pour afficher les détails -->
 <div id="details-container"></div>
 
-<!-- Script jQuery pour afficher les détails lors du clic sur le lien -->
+<!-- Script jQuery pour gérer la pagination et afficher les détails -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
-    $('.details-link').on('click', function(e){
-        e.preventDefault();
-        // Trouver le contenu de la ligne parente (tr)
-        var $tr = $(this).closest('tr');
-        // Trouver tous les éléments td sauf le premier (ID)
-        var $tds = $tr.find('td:not(:first-child)');
-        // Créer un message pour afficher les détails
-        var message = '<ul>';
-        $tds.each(function(){
-            message += '<li>' + $(this).text() + '</li>';
+    function loadPage(page) {
+        $.ajax({
+            url: 'pagination.php',
+            type: 'GET',
+            data: { page: page },
+            success: function(response) {
+                var records = response.records;
+                var totalPages = response.totalPages;
+                var $tbody = $('#records-table tbody');
+                $tbody.empty();
+                $.each(records, function(index, record) {
+                    var $tr = $('<tr>');
+                    $tr.append('<td><a href="#" class="details-link">' + record.id + '</a></td>');
+                    $tr.append('<td><a href="#" class="details-link">' + record.nom + '</a></td>');
+                    $tr.append('<td><a href="' + record.twitter + '" target="_blank">' + record.twitter + '</a></td>');
+                    $tbody.append($tr);
+                });
+
+                var $pagination = $('#pagination');
+                $pagination.empty();
+                if (page > 1) {
+                    $pagination.append('<a href="#" class="page-link" data-page="' + (page - 1) + '">Précédent</a>');
+                }
+                $pagination.append('<span> Page ' + page + ' sur ' + totalPages + ' </span>');
+                if (page < totalPages) {
+                    $pagination.append('<a href="#" class="page-link" data-page="' + (page + 1) + '">Suivant</a>');
+                }
+            }
         });
-        message += '</ul>';
-        // Afficher les détails dans le conteneur dédié
-        $('#details-container').html('<h2>Détails de l\'enregistrement</h2>' + message);
+    }
+
+    $(document).on('click', '.page-link', function(e) {
+        e.preventDefault();
+        var page = $(this).data('page');
+        loadPage(page);
     });
+
+    $(document).on('click', '.details-link', function(e) {
+        e.preventDefault();
+        var id = $(this).closest('tr').find('td:first-child').text();
+        $('#details-container').load('load_detail.php?id=' + id, function(response, status, xhr) {
+            if (status == "error") {
+                var msg = "Désolé, une erreur s'est produite: ";
+                $("#details-container").html(msg + xhr.status + " " + xhr.statusText);
+            } else {
+                console.log(response); // Afficher la réponse pour le débogage
+            }
+        });
+    });
+
+    // Charger la première page au démarrage
+    loadPage(1);
 });
 </script>
 
